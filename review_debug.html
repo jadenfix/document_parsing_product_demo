@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Endeavor FDE MVP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  
+  <script>
+    // Provide review data if available; otherwise null.
+    window.REVIEW_DATA = {"doc_id": 1, "rows": [{"choices": ["CAT-1000 \u2013 Widget A", "CAT-2000 \u2013 Widget B"], "confirmed": 0, "description": "Easy-1: Widget A", "match_id": 1}, {"choices": ["CAT-1000 \u2013 Widget A", "CAT-2000 \u2013 Widget B"], "confirmed": 0, "description": "Easy-1: Widget B", "match_id": 2}, {"choices": ["CAT-1000 \u2013 Widget A", "CAT-2000 \u2013 Widget B"], "confirmed": null, "description": "Easy-1: Widget A", "match_id": 5}, {"choices": ["CAT-1000 \u2013 Widget A", "CAT-2000 \u2013 Widget B"], "confirmed": null, "description": "Easy-1: Widget B", "match_id": 6}, {"choices": ["CAT-1000 \u2013 Widget A", "CAT-2000 \u2013 Widget B"], "confirmed": null, "description": "Easy-1: Widget A", "match_id": 7}, {"choices": ["CAT-1000 \u2013 Widget A", "CAT-2000 \u2013 Widget B"], "confirmed": null, "description": "Easy-1: Widget B", "match_id": 8}, {"choices": ["CAT-1000 \u2013 Widget A", "CAT-2000 \u2013 Widget B"], "confirmed": null, "description": "Easy-1: Widget A", "match_id": 9}, {"choices": ["CAT-1000 \u2013 Widget A", "CAT-2000 \u2013 Widget B"], "confirmed": null, "description": "Easy-1: Widget B", "match_id": 10}, {"choices": ["CAT-1000 \u2013 Widget A", "CAT-2000 \u2013 Widget B"], "confirmed": null, "description": "Easy-1: Widget A", "match_id": 17}, {"choices": ["CAT-1000 \u2013 Widget A", "CAT-2000 \u2013 Widget B"], "confirmed": null, "description": "Easy-1: Widget B", "match_id": 18}, {"choices": ["CAT-1000 \u2013 Widget A", "CAT-2000 \u2013 Widget B"], "confirmed": null, "description": "Easy-1: Widget A", "match_id": 19}, {"choices": ["CAT-1000 \u2013 Widget A", "CAT-2000 \u2013 Widget B"], "confirmed": null, "description": "Easy-1: Widget B", "match_id": 20}, {"choices": ["CAT-1000 \u2013 Widget A", "CAT-2000 \u2013 Widget B"], "confirmed": null, "description": "Easy-1: Widget A", "match_id": 21}, {"choices": ["CAT-1000 \u2013 Widget A", "CAT-2000 \u2013 Widget B"], "confirmed": null, "description": "Easy-1: Widget B", "match_id": 22}]};
+  </script>
+</head>
+<body class="p-4">
+  <div class="container">
+    <h1 class="mb-4">Endeavor FDE MVP</h1>
+
+    <!-- Upload form -->
+    <form
+      action="/upload"
+      method="post"
+      enctype="multipart/form-data"
+      class="row g-2 align-items-center"
+    >
+      <div class="col-md-6">
+        <input
+          type="file"
+          name="file"
+          accept="application/pdf"
+          class="form-control"
+          required
+        />
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-primary">Upload PDF</button>
+      </div>
+    </form>
+
+    <!-- Review section (populated by JS) -->
+    
+    <form method="POST" action="/confirm/1" class="mt-5">
+      <table class="table table-striped">
+        <tr><th>Description</th><th>Your Match</th></tr>
+        
+        <tr>
+          <td>Easy-1: Widget A</td>
+          <td>
+            <select name="1" class="form-select">
+              
+              <option value="0" selected>CAT-1000 – Widget A</option>
+              
+              <option value="1" >CAT-2000 – Widget B</option>
+              
+            </select>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Easy-1: Widget B</td>
+          <td>
+            <select name="2" class="form-select">
+              
+              <option value="0" selected>CAT-1000 – Widget A</option>
+              
+              <option value="1" >CAT-2000 – Widget B</option>
+              
+            </select>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Easy-1: Widget A</td>
+          <td>
+            <select name="5" class="form-select">
+              
+              <option value="0" >CAT-1000 – Widget A</option>
+              
+              <option value="1" >CAT-2000 – Widget B</option>
+              
+            </select>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Easy-1: Widget B</td>
+          <td>
+            <select name="6" class="form-select">
+              
+              <option value="0" >CAT-1000 – Widget A</option>
+              
+              <option value="1" >CAT-2000 – Widget B</option>
+              
+            </select>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Easy-1: Widget A</td>
+          <td>
+            <select name="7" class="form-select">
+              
+              <option value="0" >CAT-1000 – Widget A</option>
+              
+              <option value="1" >CAT-2000 – Widget B</option>
+              
+            </select>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Easy-1: Widget B</td>
+          <td>
+            <select name="8" class="form-select">
+              
+              <option value="0" >CAT-1000 – Widget A</option>
+              
+              <option value="1" >CAT-2000 – Widget B</option>
+              
+            </select>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Easy-1: Widget A</td>
+          <td>
+            <select name="9" class="form-select">
+              
+              <option value="0" >CAT-1000 – Widget A</option>
+              
+              <option value="1" >CAT-2000 – Widget B</option>
+              
+            </select>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Easy-1: Widget B</td>
+          <td>
+            <select name="10" class="form-select">
+              
+              <option value="0" >CAT-1000 – Widget A</option>
+              
+              <option value="1" >CAT-2000 – Widget B</option>
+              
+            </select>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Easy-1: Widget A</td>
+          <td>
+            <select name="17" class="form-select">
+              
+              <option value="0" >CAT-1000 – Widget A</option>
+              
+              <option value="1" >CAT-2000 – Widget B</option>
+              
+            </select>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Easy-1: Widget B</td>
+          <td>
+            <select name="18" class="form-select">
+              
+              <option value="0" >CAT-1000 – Widget A</option>
+              
+              <option value="1" >CAT-2000 – Widget B</option>
+              
+            </select>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Easy-1: Widget A</td>
+          <td>
+            <select name="19" class="form-select">
+              
+              <option value="0" >CAT-1000 – Widget A</option>
+              
+              <option value="1" >CAT-2000 – Widget B</option>
+              
+            </select>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Easy-1: Widget B</td>
+          <td>
+            <select name="20" class="form-select">
+              
+              <option value="0" >CAT-1000 – Widget A</option>
+              
+              <option value="1" >CAT-2000 – Widget B</option>
+              
+            </select>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Easy-1: Widget A</td>
+          <td>
+            <select name="21" class="form-select">
+              
+              <option value="0" >CAT-1000 – Widget A</option>
+              
+              <option value="1" >CAT-2000 – Widget B</option>
+              
+            </select>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Easy-1: Widget B</td>
+          <td>
+            <select name="22" class="form-select">
+              
+              <option value="0" >CAT-1000 – Widget A</option>
+              
+              <option value="1" >CAT-2000 – Widget B</option>
+              
+            </select>
+          </td>
+        </tr>
+        
+      </table>
+      <button class="btn btn-success">Confirm &amp; Download CSV</button>
+    </form>
+    
+
+    <!-- Placeholder div for JS rendering when no server render -->
+    <div id="review-section" class="mt-5"></div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html> 

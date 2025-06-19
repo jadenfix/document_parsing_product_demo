@@ -1,70 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Endeavor FDE MVP</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
-  {# Inject review data for JS (may be undefined on home page) #}
+{% extends 'layout.html' %}
+
+{% block head_extra %}
   <script>
-    // Provide review data if available; otherwise null.
     window.REVIEW_DATA = {{ REVIEW_DATA | default(None) | tojson | safe }};
   </script>
-</head>
-<body class="p-4">
-  <div class="container">
-    <h1 class="mb-4">Endeavor FDE MVP</h1>
+{% endblock %}
 
-    <!-- Upload form -->
-    <form
-      action="/upload"
-      method="post"
-      enctype="multipart/form-data"
-      class="row g-2 align-items-center"
-    >
-      <div class="col-md-6">
-        <input
-          type="file"
-          name="file"
-          accept="application/pdf"
-          class="form-control"
-          required
-        />
-      </div>
-      <div class="col-auto">
-        <button class="btn btn-primary">Upload PDF</button>
-      </div>
-    </form>
+{% block header %}Purchase Orders{% endblock %}
 
-    <!-- Review section (populated by JS) -->
+{% block content %}
+  <h2 class="mb-4">Upload a Purchase Order PDF</h2>
+  <form action="/upload" method="post" enctype="multipart/form-data" class="row gy-2 gx-3 align-items-center mb-5">
+    <div class="col-sm-6 col-md-4">
+      <input type="file" name="file" accept="application/pdf" class="form-control" required>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary">Upload PDF</button>
+    </div>
+  </form>
+
+  <div id="review-section">
     {% if REVIEW_DATA %}
-    <form method="POST" action="/confirm/{{ REVIEW_DATA.doc_id }}" class="mt-5">
-      <table class="table table-striped">
-        <tr><th>Description</th><th>Your Match</th></tr>
-        {% for row in REVIEW_DATA.rows %}
-        <tr>
-          <td>{{ row.description }}</td>
-          <td>
-            <select name="{{ row.match_id }}" class="form-select">
-              {% for choice in row.choices %}
-              <option value="{{ loop.index0 }}" {% if row.confirmed is not none and row.confirmed==loop.index0 %}selected{% endif %}>{{ choice }}</option>
-              {% endfor %}
-            </select>
-          </td>
-        </tr>
-        {% endfor %}
-      </table>
+    <h2 class="mb-3">Review &amp; Confirm Matches</h2>
+    <form method="POST" action="/confirm/{{ REVIEW_DATA.doc_id }}" class="mb-5">
+      <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+          <thead class="table-light">
+            <tr><th>Description</th><th style="width:340px">Your Match</th></tr>
+          </thead>
+          <tbody>
+          {% for row in REVIEW_DATA.rows %}
+            <tr>
+              <td>{{ row.description }}</td>
+              <td>
+                <select name="{{ row.match_id }}" class="form-select">
+                  {% for choice in row.choices %}
+                  <option value="{{ loop.index0 }}" {% if row.confirmed is not none and row.confirmed==loop.index0 %}selected{% endif %}>{{ choice }}</option>
+                  {% endfor %}
+                </select>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
       <button class="btn btn-success">Confirm &amp; Download CSV</button>
     </form>
     {% endif %}
-
-    <!-- Placeholder div for JS rendering when no server render -->
-    <div id="review-section" class="mt-5"></div>
   </div>
-
-  <script src="/static/app.js"></script>
-</body>
-</html> 
+{% endblock %} 

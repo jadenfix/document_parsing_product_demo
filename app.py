@@ -36,14 +36,30 @@ dictConfig({
 LOG = logging.getLogger(__name__)
 
 # External endpoints (can be overridden via env vars)
-API_BASE = os.getenv("ENDEAVOR_API", "https://api.endeavor.ai")
-EXTRACT_ENDPOINT = os.getenv("EXTRACT_ENDPOINT", f"{API_BASE}/extract")
-MATCH_ENDPOINT = os.getenv("MATCH_ENDPOINT", f"{API_BASE}/match")
+# API_BASE = os.getenv("ENDEAVOR_API", "https://api.endeavor.ai")
+# EXTRACT_ENDPOINT = os.getenv("EXTRACT_ENDPOINT", f"{API_BASE}/extract")
+# MATCH_ENDPOINT = os.getenv("MATCH_ENDPOINT", f"{API_BASE}/match")
+
+# Production endpoints for the interview
+# Support legacy ENDEAVOR_API for backwards compatibility with tests
+API_BASE = os.getenv("ENDEAVOR_API", "")
+if API_BASE:
+    EXTRACT_ENDPOINT = os.getenv("EXTRACT_ENDPOINT", f"{API_BASE}/extraction_api")
+    MATCH_ENDPOINT = os.getenv("MATCH_ENDPOINT", f"{API_BASE}/match")
+else:
+    EXTRACT_ENDPOINT = os.getenv("EXTRACT_ENDPOINT", "https://plankton-app-qajlk.ondigitalocean.app/extraction_api")
+    MATCH_ENDPOINT = os.getenv("MATCH_ENDPOINT", "https://endeavor-interview-api-gzwki.ondigitalocean.app/match")
 
 # App configuration
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "4"))
 UPLOAD_FOLDER = "uploads"
-DB_PATH = os.getenv("DB_PATH", "data.db")
+
+# Store default path but always look up env when connecting
+DEFAULT_DB_PATH = os.getenv("DB_PATH", "data.db")
+
+def _current_db_path() -> str:
+    """Return DB path from environment, falling back to default."""
+    return os.getenv("DB_PATH", DEFAULT_DB_PATH)
 
 # Allow forcing synchronous parsing (useful for integration tests)
 SYNC_PARSE = os.getenv("SYNC_PARSE", "0") == "1"
@@ -59,7 +75,7 @@ executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 def init_db() -> None:
     """Initialize the SQLite database and run migrations if necessary."""
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(_current_db_path())
     conn.executescript(
         """
     CREATE TABLE IF NOT EXISTS documents (
@@ -81,12 +97,25 @@ def init_db() -> None:
         line_item_id  INTEGER,
         choice_json   TEXT,
         confirmed_id  INTEGER,
-        FOREIGN KEY(line_item_id) REFERENCES line_items(id)
+        FOREIGN KEY(line_item_id) REFERENCES line_items(id) ON DELETE CASCADE
     );
+
+    -- Ensure duplicates are removed so the unique constraint can be applied when
+    -- the code runs against an existing DB that already contains duplicates.
+    DELETE FROM line_items
+      WHERE id NOT IN (
+        SELECT MIN(id) FROM line_items GROUP BY document_id, raw_index
+      );
+
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_line_unique ON line_items(document_id, raw_index);
     """
     )
     conn.commit()
     conn.close()
+
+    # Log where the database file lives for easier debugging & to ensure we
+    # respect dynamic DB_PATH overrides (critical for the integration tests).
+    LOG.info("Database initialised at %s", _current_db_path())
 
 
 # Flask 3 removed `before_first_request`. Initialize the DB eagerly.
@@ -98,8 +127,16 @@ LOG.info("DB initialized.")
 
 def db_conn() -> sqlite3.Connection:
     """Return a SQLite connection with Row factory enabled."""
-    connection = sqlite3.connect(DB_PATH)
+    db_path = _current_db_path()
+    # Defensive: ensure parent directory exists when a user passes a nested path.
+    os.makedirs(os.path.dirname(db_path) or ".", exist_ok=True)
+    connection = sqlite3.connect(db_path)
     connection.row_factory = sqlite3.Row
+    # Ensure ON DELETE CASCADE works and keep referential integrity
+    connection.execute("PRAGMA foreign_keys = ON;")
+    # In extremely verbose logging scenarios this can be useful, but avoid
+    # spamming output every query.  Toggle via LOG level if needed.
+    LOG.debug("Opened SQLite connection to %s", db_path)
     return connection
 
 
@@ -148,18 +185,48 @@ def upload():
 def parse_and_store(doc_id: int, filename: str) -> None:
     """Call extract API, then persist line items for later review."""
     LOG.info("Parsing doc %s", doc_id)
-    resp = requests.post(EXTRACT_ENDPOINT, json={"documentName": filename})
+    
+    # Upload file to extraction API using multipart form data
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
+    with open(file_path, 'rb') as f:
+        files = {'file': (filename, f, 'application/pdf')}
+        resp = requests.post(EXTRACT_ENDPOINT, files=files)
     resp.raise_for_status()
-    items = resp.json().get("items", [])
+    
+    # API returns array of objects directly
+    items = resp.json()
+    # Convert the extraction API format to expected format
+    if items and isinstance(items[0], dict) and 'description' not in items[0]:
+        # API returns objects like {"Request Item": "...", "Amount": ..., ...}
+        # Convert to our expected format
+        formatted_items = []
+        for item in items:
+            request_item = item.get("Request Item", "")
+            amount = item.get("Amount", "")
+            # Create a description combining the key info
+            description = f"{request_item} (Qty: {amount})" if amount else request_item
+            formatted_items.append({"description": description})
+        items = formatted_items
 
     conn = db_conn()
     c = conn.cursor()
-    for idx, itm in enumerate(items):
+    with conn:  # ensures atomic commit / rollback
+        # Clear out existing data for id to avoid stale rows
         c.execute(
-            "INSERT INTO line_items(document_id, description, raw_index) VALUES(?,?,?)",
-            (doc_id, itm["description"], idx),
-        )
-    conn.commit()
+            "DELETE FROM matches WHERE line_item_id IN (SELECT id FROM line_items WHERE document_id=?)",
+            (doc_id,))
+        c.execute("DELETE FROM line_items WHERE document_id=?", (doc_id,))
+
+        for idx, itm in enumerate(items):
+            # Use UPSERT to guard against any race conditions if parse runs twice
+            c.execute(
+                """
+                INSERT INTO line_items(document_id, description, raw_index)
+                VALUES(?,?,?)
+                ON CONFLICT(document_id, raw_index) DO UPDATE SET description=excluded.description
+                """,
+                (doc_id, itm["description"], idx))
+
     LOG.info("Stored %d items for doc %s", len(items), doc_id)
 
 
@@ -178,14 +245,18 @@ def review(doc_id: int):
         if not c.execute(
             "SELECT 1 FROM matches WHERE line_item_id=?", (itm["id"],)
         ).fetchone():
-            resp = requests.post(
+            # Use GET request with query parameter for the matching API
+            resp = requests.get(
                 MATCH_ENDPOINT,
-                json={"documentName": itm["description"], "itemIndex": itm["raw_index"]},
+                params={"query": itm["description"], "limit": 5},
             )
             resp.raise_for_status()
+            # Convert the API response format to match expected format
+            matches = resp.json()
+            choices = [{"name": m["match"], "score": m["score"]} for m in matches]
             c.execute(
                 "INSERT INTO matches(line_item_id, choice_json) VALUES(?,?)",
-                (itm["id"], json.dumps(resp.json().get("choices", []))),
+                (itm["id"], json.dumps(choices)),
             )
     conn.commit()
 

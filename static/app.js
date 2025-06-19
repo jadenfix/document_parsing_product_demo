@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const data = window.REVIEW_DATA;
-  if (!data) return; // Nothing to review yet
+  const wrapper = document.getElementById("review-section");
+  if (!data || !wrapper || wrapper.childElementCount > 0) return; // already rendered
 
   // Build a form dynamically so the user can confirm matches
   const form = document.createElement("form");
@@ -16,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const opts = r.choices
       .map(
         (c, i) =>
-          `<option value="${i}" ${r.confirmed === i ? "selected" : ""}>${c}</option>`
+          `<option value=\"${i}\" ${r.confirmed === i ? "selected" : ""}>${c}</option>`
       )
       .join("");
 
@@ -30,5 +31,5 @@ document.addEventListener("DOMContentLoaded", () => {
   form.appendChild(table);
   form.innerHTML +=
     '<button class="btn btn-success">Confirm &amp; Download CSV</button>';
-  document.getElementById("review-section").appendChild(form);
+  wrapper.appendChild(form);
 }); 

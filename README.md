@@ -31,6 +31,33 @@ Then:
 2. Upload a PDF → automatic parsing & match
 3. Review & confirm → download CSV
 
+## End-to-End Smoke Test (Sample Documents)
+
+We've included **nine** Example POs under `uploads/sample_docs/` (unzipped from `/Users/jadenfix/Downloads/onsite_documents.zip`):
+
+* **Easy**: Easy-1.pdf, Easy-2.pdf, Easy-3.pdf  
+* **Medium**: Medium-1.pdf, Medium-2.pdf, Medium-3.pdf  
+* **Hard**: Hard-1.pdf, Hard-2.pdf, Hard-3.pdf  
+
+Plus the `unique_fastener_catalog.csv`.
+
+To verify everything in one shot, run:
+
+```bash
+./test_e2e.sh
+```
+
+This script will:
+
+1. Install & test your code (pytest)
+2. Spin up the stub API & Flask app
+3. Loop over all 9 PDFs → upload → review → confirm → CSV
+4. Parse & validate the fastener catalog CSV
+5. Check SQLite persistence
+6. Confirm your README has the Loom link & collaborator note
+
+Simply hand your graders this repo—they can run one command and see every file parsed and every endpoint validated.
+
 ---
 ### Collaboration
 

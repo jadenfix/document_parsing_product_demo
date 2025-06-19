@@ -17,6 +17,9 @@ from concurrent.futures import ThreadPoolExecutor
 
 import requests
 from flask import Flask, request, render_template, redirect, url_for, Response
+import csv
+import io
+from fuzzywuzzy import fuzz, process
 
 # ---- CONFIG ----
 from logging.config import dictConfig
@@ -155,6 +158,57 @@ def stream_csv(rows: List[Dict[str, Any]]) -> Generator[str, None, None]:
         yield f'"{description}","{confirmed_choice}"\n'
 
 
+def load_catalog():
+    """Load the product catalog for custom matching"""
+    catalog = []
+    try:
+        # Try to load from uploads directory first
+        catalog_path = os.path.join(UPLOAD_FOLDER, 'sample_docs', 'unique_fastener_catalog.csv')
+        if not os.path.exists(catalog_path):
+            # Fallback to current directory
+            catalog_path = 'unique_fastener_catalog.csv'
+        
+        if os.path.exists(catalog_path):
+            with open(catalog_path, 'r', encoding='utf-8') as f:
+                reader = csv.reader(f)
+                next(reader)  # Skip header
+                for row in reader:
+                    if row:  # Skip empty rows
+                        catalog.append(row[0])  # Assuming product name is first column
+    except Exception as e:
+        LOG.error(f"Failed to load catalog: {e}")
+    
+    return catalog
+
+PRODUCT_CATALOG = load_catalog()
+LOG.info(f"Loaded {len(PRODUCT_CATALOG)} products into catalog")
+
+def custom_match(description: str, use_custom: bool = False) -> List[Dict[str, Any]]:
+    """
+    Custom matching algorithm using fuzzy string matching
+    Returns matches in the same format as the production API
+    """
+    if not use_custom or not PRODUCT_CATALOG:
+        return []
+    
+    try:
+        # Use fuzzy matching to find similar products
+        matches = process.extract(description, PRODUCT_CATALOG, 
+                                scorer=fuzz.token_sort_ratio, limit=10)
+        
+        # Convert to expected format
+        results = []
+        for match_text, score in matches:
+            results.append({
+                "name": match_text,
+                "score": score / 100.0  # Convert to 0-1 scale
+            })
+        
+        return results
+    except Exception as e:
+        LOG.error(f"Custom matching failed: {e}")
+        return []
+
 # ---- ROUTES ----
 @app.route("/")
 def home():
@@ -252,15 +306,24 @@ def review(doc_id: int):
         if not c.execute(
             "SELECT 1 FROM matches WHERE line_item_id=?", (itm["id"],)
         ).fetchone():
-            # Use GET request with query parameter for the matching API
-            resp = requests.get(
-                MATCH_ENDPOINT,
-                params={"query": itm["description"], "limit": 5},
-            )
-            resp.raise_for_status()
-            # Convert the API response format to match expected format
-            matches = resp.json()
-            choices = [{"name": m["match"], "score": m["score"]} for m in matches]
+            # Try production API first
+            choices = []
+            try:
+                resp = requests.get(
+                    MATCH_ENDPOINT,
+                    params={"query": itm["description"], "limit": 5},
+                )
+                resp.raise_for_status()
+                matches = resp.json()
+                choices = [{"name": m["match"], "score": m["score"]} for m in matches]
+            except Exception as e:
+                LOG.error(f"API matching failed: {e}")
+            
+            # If API failed or returned no matches, use custom matching
+            if not choices:
+                LOG.info(f"Using custom matching for: {itm['description']}")
+                choices = custom_match(itm["description"], use_custom=True)
+                
             c.execute(
                 "INSERT INTO matches(line_item_id, choice_json) VALUES(?,?)",
                 (itm["id"], json.dumps(choices)),

@@ -3,102 +3,56 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{% block title %}Endeavor AI - FDE Platform{% endblock %}</title>
+  <title>{% block title %}Endeavor AI - Document Processing Platform{% endblock %}</title>
   
-  <!-- Google Fonts -->
+  <!-- Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Bootstrap & Custom CSS -->
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <!-- Custom CSS -->
   <link href="/static/styles.css" rel="stylesheet" />
   
   {% block head_extra %}{% endblock %}
 </head>
 <body>
-  <div class="d-flex" id="wrapper">
-    <!-- Enhanced Sidebar -->
-    <nav id="sidebar">
-      <div class="sidebar-heading">Endeavor AI</div>
-      
-      <div class="sidebar-category">Supply Chain</div>
-      <ul class="sidebar-nav">
-        <li class="nav-item">
-          <a href="/" class="nav-link active">Purchase Orders</a>
-        </li>
-        <li class="nav-item">
-          <a href="#customer" class="nav-link">Customer Analytics</a>
-        </li>
-        <li class="nav-item">
-          <a href="#supplier" class="nav-link">Supplier Performance</a>
-        </li>
-      </ul>
+  <div class="main-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <div class="logo-icon">🚀</div>
+          <span>Endeavor AI</span>
+        </a>
+        <div class="nav-badge">FDE Platform</div>
+      </div>
+    </header>
 
-      <div class="sidebar-category">Material Planning</div>
-      <ul class="sidebar-nav">
-        <li class="nav-item">
-          <a href="#inventory" class="nav-link">Inventory Coverage</a>
-        </li>
-        <li class="nav-item">
-          <a href="#transit" class="nav-link">In-Transit Inventory</a>
-        </li>
-        <li class="nav-item">
-          <a href="#forecast" class="nav-link">Inventory Forecast</a>
-        </li>
-      </ul>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <h1 class="hero-title">
+        {% block header %}Transform Documents with AI{% endblock %}
+      </h1>
+      <p class="hero-subtitle">
+        Automated extraction and matching for manufacturing trade documents. 
+        Process purchase orders with AI-powered precision and human oversight.
+      </p>
+    </section>
 
-      <div class="sidebar-category">Finance</div>
-      <ul class="sidebar-nav">
-        <li class="nav-item">
-          <a href="#purchasing" class="nav-link">Purchasing</a>
-        </li>
-      </ul>
-    </nav>
-
-    <!-- Page content -->
-    <div id="page-content-wrapper" class="w-100">
-      <nav class="navbar navbar-expand-lg navbar-light">
-        <button class="btn" id="sidebarToggle">☰</button>
-        <span class="navbar-brand ms-3">{% block header %}Purchase Orders{% endblock %}</span>
-      </nav>
-
-      <main class="container-fluid">
-        {% block content %}{% endblock %}
-      </main>
-    </div>
+    <!-- Main Content -->
+    <main class="content-wrapper">
+      {% block content %}{% endblock %}
+    </main>
   </div>
 
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Enhanced sidebar toggle with smooth animations
-    document.addEventListener('DOMContentLoaded', () => {
-      const toggleBtn = document.getElementById('sidebarToggle');
-      const sidebar = document.getElementById('sidebar');
-      
-      toggleBtn?.addEventListener('click', () => {
-        sidebar.classList.toggle('collapsed');
-        
-        // Store preference in localStorage
-        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
-      });
-      
-      // Restore sidebar state from localStorage
-      if (localStorage.getItem('sidebarCollapsed') === 'true') {
-        sidebar.classList.add('collapsed');
-      }
-      
-      // Add mobile responsive behavior
-      function handleResize() {
-        if (window.innerWidth <= 768) {
-          sidebar.classList.add('collapsed');
-        }
-      }
-      
-      window.addEventListener('resize', handleResize);
-      handleResize(); // Check on load
-    });
-  </script>
-  {% block body_extra %}{% endblock %}
+  
+  <!-- Custom JavaScript -->
+  <script src="/static/app.js"></script>
+  
+  {% block scripts %}{% endblock %}
 </body>
 </html> 

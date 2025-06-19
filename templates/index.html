@@ -6,171 +6,246 @@
   </script>
 {% endblock %}
 
-{% block header %}Purchase Orders{% endblock %}
+{% block header %}Smart Document Processing{% endblock %}
 
 {% block content %}
-  <!-- Enhanced Upload Section -->
-  <div class="upload-section card-hover">
-    <h2>📄 Upload a Purchase Order PDF</h2>
-    <p class="text-muted mb-4">Upload your purchase order document to extract items and find catalog matches automatically.</p>
+  <!-- Upload Section -->
+  <section class="upload-section fade-in">
+    <h2>📄 Upload Purchase Order</h2>
+    <p>Drop your PDF purchase order here for intelligent extraction and catalog matching. Our AI will identify line items and suggest the best product matches from your catalog.</p>
     
-    <form action="/upload" method="post" enctype="multipart/form-data" class="row gy-3 gx-3 align-items-end">
-      <div class="col-md-8">
-        <label for="file-input" class="form-label fw-semibold">Select PDF File</label>
-        <div class="file-upload-wrapper">
-          <input type="file" id="file-input" name="file" accept="application/pdf" class="form-control" required>
+    <form action="/upload" method="post" enctype="multipart/form-data" id="upload-form">
+      <div class="file-upload-area" id="file-drop-area">
+        <div class="upload-icon">📁</div>
+        <div class="upload-text">
+          <strong>Drag & drop your PDF here</strong> or click to browse
         </div>
+        <div class="upload-hint">
+          Supports: Easy-1.pdf through Hard-3.pdf format
+        </div>
+        <input type="file" id="file-input" name="file" accept=".pdf" class="d-none" required>
       </div>
-      <div class="col-md-4">
-        <button type="submit" class="btn btn-primary w-100">
-          📤 Upload PDF
+      
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary btn-lg" id="upload-btn">
+          <span class="btn-text">🚀 Process Document</span>
+          <span class="loading-spinner d-none"></span>
         </button>
       </div>
     </form>
-  </div>
+  </section>
 
-  <!-- Review Section -->
+  <!-- Review Section (shown when data exists) -->
   {% if REVIEW_DATA %}
-  <div class="review-section card-hover">
-    <h2>🔍 Review &amp; Confirm Matches</h2>
-    
-    <div class="table-container">
-      <form method="POST" action="/confirm/{{ REVIEW_DATA.doc_id }}">
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>📋 Description</th>
-                <th style="width:400px">🎯 Your Match</th>
-              </tr>
-            </thead>
-            <tbody>
-            {% for row in REVIEW_DATA.rows %}
-              <tr>
-                <td>
-                  <div class="fw-semibold text-primary">{{ row.description }}</div>
-                </td>
-                <td>
-                  <select name="{{ row.match_id }}" class="form-select">
-                    {% for choice in row.choices %}
-                    <option value="{{ loop.index0 }}" 
-                            {% if row.confirmed is not none and row.confirmed==loop.index0 %}selected{% endif %}>
-                      {{ choice.name }} ({{ "%.1f"|format(choice.score * 100) }}% match)
-                    </option>
-                    {% endfor %}
-                  </select>
-                </td>
-              </tr>
-            {% endfor %}
-            </tbody>
-          </table>
-        </div>
-        
-        <div class="d-flex justify-content-end pt-3">
-          <button type="submit" class="btn btn-success btn-lg">
-            ✅ Confirm &amp; Download CSV
-          </button>
-        </div>
-      </form>
+  <section class="review-section slide-up">
+    <div class="review-header">
+      <h2 class="review-title">
+        ✨ Review & Confirm Matches
+      </h2>
+      <span class="review-badge">{{ REVIEW_DATA.rows|length }} items extracted</span>
     </div>
-  </div>
-  {% else %}
-  <!-- Empty State -->
-  <div class="text-center py-5">
-    <div class="text-muted mb-3" style="font-size: 3rem;">📋</div>
-    <h3 class="text-muted">No document uploaded yet</h3>
-    <p class="text-muted">Upload a purchase order PDF above to get started with automatic item extraction and catalog matching.</p>
-  </div>
+
+    <form method="post" action="/confirm/{{ REVIEW_DATA.doc_id }}" id="review-form">
+      <div class="table-responsive">
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th>Extracted Description</th>
+              <th>Select Best Match</th>
+              <th>Confidence</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in REVIEW_DATA.rows %}
+            <tr>
+              <td>
+                <div class="fw-semibold text-primary">{{ row.description }}</div>
+                <div class="text-muted small mt-1">Item {{ loop.index }}</div>
+              </td>
+              <td>
+                <select class="modern-select" name="confirmed_{{ row.index }}" required>
+                  <option value="">Choose a match...</option>
+                                     {% for choice in row.choices %}
+                   <option value="{{ loop.index0 }}" 
+                     {% if loop.index0 == 0 %}selected{% endif %}>
+                     {{ choice.name }} ({{ "%.1f"|format(choice.score * 100) }}% match)
+                   </option>
+                   {% endfor %}
+                </select>
+              </td>
+                             <td>
+                 {% if row.choices %}
+                   {% set best_score = row.choices[0].score %}
+                   <span class="badge {% if best_score > 0.9 %}bg-success{% elif best_score > 0.7 %}bg-warning{% else %}bg-secondary{% endif %}">
+                     {{ "%.1f"|format(best_score * 100) }}%
+                   </span>
+                 {% endif %}
+               </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-success btn-lg">
+          ✅ Confirm & Download CSV
+        </button>
+      </div>
+    </form>
+  </section>
   {% endif %}
+
+  <!-- Features Section -->
+  <section class="features-section mt-5">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card text-center p-4">
+          <div class="feature-icon mb-3">🤖</div>
+          <h4 class="fw-bold">AI Extraction</h4>
+          <p class="text-muted">Advanced models extract line items with quantities and descriptions automatically.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card text-center p-4">
+          <div class="feature-icon mb-3">🎯</div>
+          <h4 class="fw-bold">Smart Matching</h4>
+          <p class="text-muted">Intelligent catalog matching with confidence scores and human verification.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card text-center p-4">
+          <div class="feature-icon mb-3">📊</div>
+          <h4 class="fw-bold">Export Ready</h4>
+          <p class="text-muted">Download processed results as CSV for seamless integration with your systems.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock %}
 
-{% block body_extra %}
+{% block scripts %}
 <script>
-// Add some interactive enhancements
-document.addEventListener('DOMContentLoaded', () => {
-  // File input enhancement
+document.addEventListener('DOMContentLoaded', function() {
+  const dropArea = document.getElementById('file-drop-area');
   const fileInput = document.getElementById('file-input');
-  const fileWrapper = document.querySelector('.file-upload-wrapper');
+  const uploadForm = document.getElementById('upload-form');
+  const uploadBtn = document.getElementById('upload-btn');
   
-  if (fileInput && fileWrapper) {
-    // Drag and drop functionality
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-      fileWrapper.addEventListener(eventName, preventDefaults, false);
-    });
+  // Handle file drop
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, preventDefaults, false);
+  });
+  
+  function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  
+  ['dragenter', 'dragover'].forEach(eventName => {
+    dropArea.addEventListener(eventName, highlight, false);
+  });
+  
+  ['dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, unhighlight, false);
+  });
+  
+  function highlight(e) {
+    dropArea.classList.add('dragover');
+  }
+  
+  function unhighlight(e) {
+    dropArea.classList.remove('dragover');
+  }
+  
+  dropArea.addEventListener('drop', handleDrop, false);
+  
+  function handleDrop(e) {
+    const dt = e.dataTransfer;
+    const files = dt.files;
     
-    ['dragenter', 'dragover'].forEach(eventName => {
-      fileWrapper.addEventListener(eventName, highlight, false);
-    });
-    
-    ['dragleave', 'drop'].forEach(eventName => {
-      fileWrapper.addEventListener(eventName, unhighlight, false);
-    });
-    
-    fileWrapper.addEventListener('drop', handleDrop, false);
-    
-    function preventDefaults(e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    
-    function highlight() {
-      fileWrapper.classList.add('border-primary', 'bg-light');
-    }
-    
-    function unhighlight() {
-      fileWrapper.classList.remove('border-primary', 'bg-light');
-    }
-    
-    function handleDrop(e) {
-      const dt = e.dataTransfer;
-      const files = dt.files;
-      
-      if (files.length > 0) {
-        fileInput.files = files;
-        updateFileLabel(files[0].name);
-      }
-    }
-    
-    // Update file label when file is selected
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) {
-        updateFileLabel(e.target.files[0].name);
-      }
-    });
-    
-    function updateFileLabel(filename) {
-      const label = document.querySelector('label[for="file-input"]');
-      if (label) {
-        label.innerHTML = `📎 Selected: ${filename}`;
-        label.classList.add('text-success');
-      }
+    if (files.length > 0) {
+      fileInput.files = files;
+      updateFileDisplay(files[0]);
     }
   }
   
-  // Table row hover effects
-  const tableRows = document.querySelectorAll('.table tbody tr');
-  tableRows.forEach(row => {
-    row.addEventListener('mouseenter', () => {
-      row.style.transform = 'scale(1.01)';
-    });
-    
-    row.addEventListener('mouseleave', () => {
-      row.style.transform = 'scale(1)';
-    });
+  // Handle click to select file
+  dropArea.addEventListener('click', () => {
+    fileInput.click();
   });
   
-  // Add loading animation to form submission
-  const forms = document.querySelectorAll('form');
-  forms.forEach(form => {
-    form.addEventListener('submit', (e) => {
-      const submitBtn = form.querySelector('button[type="submit"]');
-      if (submitBtn) {
-        submitBtn.innerHTML = '⏳ Processing...';
-        submitBtn.disabled = true;
-        submitBtn.classList.add('loading');
-      }
-    });
+  fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+      updateFileDisplay(e.target.files[0]);
+    }
   });
+  
+  function updateFileDisplay(file) {
+    const uploadText = dropArea.querySelector('.upload-text');
+    uploadText.innerHTML = `<strong>📄 ${file.name}</strong><br>Ready to process`;
+  }
+  
+  // Handle form submission with loading state
+  uploadForm.addEventListener('submit', function() {
+    const btnText = uploadBtn.querySelector('.btn-text');
+    const spinner = uploadBtn.querySelector('.loading-spinner');
+    
+    btnText.classList.add('d-none');
+    spinner.classList.remove('d-none');
+    uploadBtn.disabled = true;
+  });
+  
+  // Auto-scroll to review section if it exists
+  if (window.REVIEW_DATA) {
+    setTimeout(() => {
+      document.querySelector('.review-section')?.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }, 300);
+  }
 });
 </script>
+
+<style>
+.feature-card {
+  background: var(--gradient-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl);
+}
+
+.feature-icon {
+  font-size: 3rem;
+}
+
+.features-section {
+  margin-top: var(--space-3xl);
+}
+
+.badge {
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+}
+
+.bg-success {
+  background: linear-gradient(135deg, var(--success-green), #059669) !important;
+}
+
+.bg-warning {
+  background: linear-gradient(135deg, var(--warning-amber), #D97706) !important;
+}
+
+.bg-secondary {
+  background: linear-gradient(135deg, var(--text-muted), var(--text-secondary)) !important;
+}
+</style>
 {% endblock %} 

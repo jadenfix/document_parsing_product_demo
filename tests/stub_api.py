@@ -6,22 +6,25 @@ from flask import Flask, request, jsonify
 app = Flask("stub_api")
 
 
-@app.route("/extract", methods=["POST"])
+@app.route("/extraction_api", methods=["POST"])
 def extract():
-    """Return two dummy line items regardless of input."""
-    return jsonify(items=[
-        {"description": "Easy-1: Widget A"},
-        {"description": "Easy-1: Widget B"},
+    """Return dummy line items in the format that matches the real API."""
+    return jsonify([
+        {"Request Item": "Easy-1: Widget A", "Amount": 100, "Unit Price": None, "Total": None},
+        {"Request Item": "Easy-1: Widget B", "Amount": 200, "Unit Price": None, "Total": None},
     ])
 
 
-@app.route("/match", methods=["POST"])
+@app.route("/match", methods=["GET"])
 def match():
-    """Return two dummy catalog choices regardless of input."""
-    return jsonify(choices=[
-        "CAT-1000 – Widget A",
-        "CAT-2000 – Widget B",
-    ])
+    """Return dummy catalog choices in the format that matches the real API."""
+    query = request.args.get('query', '')
+    limit = int(request.args.get('limit', 5))
+    
+    return jsonify([
+        {"match": f"CAT-1000 – {query[:20]}...", "score": 95.5},
+        {"match": f"CAT-2000 – {query[:20]}...", "score": 87.2},
+    ][:limit])
 
 
 if __name__ == "__main__":

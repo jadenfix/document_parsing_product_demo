@@ -30,7 +30,8 @@ def start_stub_and_app(tmp_path_factory: pytest.TempPathFactory) -> Generator[No
     os.environ["DB_PATH"] = str(db_path)
 
     # 3) Point the Flask app to the stub endpoints
-    os.environ["ENDEAVOR_API"] = STUB_HOST
+    os.environ["EXTRACT_ENDPOINT"] = STUB_HOST + "/extraction_api"
+    os.environ["MATCH_ENDPOINT"] = STUB_HOST + "/match"
     os.environ["SYNC_PARSE"] = "1"
 
     # 4) Start the Flask app

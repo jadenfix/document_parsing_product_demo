@@ -36,9 +36,8 @@ dictConfig({
 LOG = logging.getLogger(__name__)
 
 # External endpoints (can be overridden via env vars)
-API_BASE = os.getenv("ENDEAVOR_API", "https://api.endeavor.ai")
-EXTRACT_ENDPOINT = os.getenv("EXTRACT_ENDPOINT", f"{API_BASE}/extract")
-MATCH_ENDPOINT = os.getenv("MATCH_ENDPOINT", f"{API_BASE}/match")
+EXTRACT_ENDPOINT = os.getenv("EXTRACT_ENDPOINT", "https://plankton-app-qajlk.ondigitalocean.app/extraction_api")
+MATCH_ENDPOINT = os.getenv("MATCH_ENDPOINT", "https://endeavor-interview-api-gzwki.ondigitalocean.app/match")
 
 # App configuration
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "4"))
@@ -148,16 +147,24 @@ def upload():
 def parse_and_store(doc_id: int, filename: str) -> None:
     """Call extract API, then persist line items for later review."""
     LOG.info("Parsing doc %s", doc_id)
-    resp = requests.post(EXTRACT_ENDPOINT, json={"documentName": filename})
+    
+    # Read the actual PDF file and send it as multipart/form-data
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
+    with open(file_path, 'rb') as f:
+        files = {'file': (filename, f, 'application/pdf')}
+        resp = requests.post(EXTRACT_ENDPOINT, files=files)
+    
     resp.raise_for_status()
-    items = resp.json().get("items", [])
+    items = resp.json()  # The API returns array of objects directly
 
     conn = db_conn()
     c = conn.cursor()
-    for idx, itm in enumerate(items):
+    for idx, item in enumerate(items):
+        # Extract the 'Request Item' field from the extraction API response
+        description = item.get('Request Item', str(item)) if isinstance(item, dict) else str(item)
         c.execute(
             "INSERT INTO line_items(document_id, description, raw_index) VALUES(?,?,?)",
-            (doc_id, itm["description"], idx),
+            (doc_id, description, idx),
         )
     conn.commit()
     LOG.info("Stored %d items for doc %s", len(items), doc_id)
@@ -178,14 +185,17 @@ def review(doc_id: int):
         if not c.execute(
             "SELECT 1 FROM matches WHERE line_item_id=?", (itm["id"],)
         ).fetchone():
-            resp = requests.post(
+            # Use the GET /match endpoint with query parameter
+            resp = requests.get(
                 MATCH_ENDPOINT,
-                json={"documentName": itm["description"], "itemIndex": itm["raw_index"]},
+                params={"query": itm["description"], "limit": 5}
             )
             resp.raise_for_status()
+            matches = resp.json()  # Returns array of {match: str, score: float}
+            choices = [match["match"] for match in matches]
             c.execute(
                 "INSERT INTO matches(line_item_id, choice_json) VALUES(?,?)",
-                (itm["id"], json.dumps(resp.json().get("choices", []))),
+                (itm["id"], json.dumps(choices)),
             )
     conn.commit()
 

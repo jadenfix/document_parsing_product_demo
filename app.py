@@ -144,8 +144,15 @@ def stream_csv(rows: List[Dict[str, Any]]) -> Generator[str, None, None]:
     """Yield CSV rows one at a time for streaming response."""
     yield "description,confirmed_choice\n"
     for r in rows:
-        confirmed_choice = r["choices"][r["confirmed_id"]] if r["confirmed_id"] is not None else ""
-        yield f'"{r["description"]}","{confirmed_choice}"\n'
+        if r["confirmed_id"] is not None and r["choices"]:
+            # choices is a list of {"name": "...", "score": ...} objects
+            confirmed_choice = r["choices"][r["confirmed_id"]]["name"]
+        else:
+            confirmed_choice = ""
+        # Escape quotes in CSV data
+        description = r["description"].replace('"', '""')
+        confirmed_choice = confirmed_choice.replace('"', '""')
+        yield f'"{description}","{confirmed_choice}"\n'
 
 
 # ---- ROUTES ----

@@ -1,0 +1,1226 @@
+[
+  {
+    "file": "Medium - 3.pdf",
+    "status": "success",
+    "doc_id": 1,
+    "items_count": 7,
+    "matches_count": 35,
+    "csv_size": 354,
+    "items": [
+      {
+        "choices": [
+          {
+            "name": "Steel Nut 1/2\" 30mm Nickel Plated Machine",
+            "score": 100.0
+          },
+          {
+            "name": "Steel Nut 1/4\" 30mm Nickel Plated Machine",
+            "score": 97.5609756097561
+          },
+          {
+            "name": "Steel Nut 1/2\" 10mm Nickel Plated Machine",
+            "score": 97.5609756097561
+          },
+          {
+            "name": "Steel Nut 1/2\" 20mm Nickel Plated Machine",
+            "score": 97.5609756097561
+          },
+          {
+            "name": "Steel Nut 1/2\" 40mm Nickel Plated Machine",
+            "score": 97.5609756097561
+          }
+        ],
+        "confirmed": null,
+        "description": "Steel Nut 1/2\" 30mm Nickel Plated Machine",
+        "match_id": 6
+      },
+      {
+        "choices": [
+          {
+            "name": "Brass Stud 1/4\" 30mm Zinc Plated Wood",
+            "score": 100.0
+          },
+          {
+            "name": "Brass Stud 1/4\" 10mm Zinc Plated Wood",
+            "score": 97.2972972972973
+          },
+          {
+            "name": "Brass Stud 1/4\" 20mm Zinc Plated Wood",
+            "score": 97.2972972972973
+          },
+          {
+            "name": "Brass Stud 1/4\" 40mm Zinc Plated Wood",
+            "score": 97.2972972972973
+          },
+          {
+            "name": "Brass Stud 1/4\" 50mm Zinc Plated Wood",
+            "score": 97.2972972972973
+          }
+        ],
+        "confirmed": null,
+        "description": "Brass Stud 1/4\" 30mm Zinc Plated Wood",
+        "match_id": 7
+      },
+      {
+        "choices": [
+          {
+            "name": "Aluminum Bolt 1/2\" 20mm Uncoated Coarse",
+            "score": 100.0
+          },
+          {
+            "name": "Aluminum Bolt 1/4\" 20mm Uncoated Coarse",
+            "score": 97.43589743589743
+          },
+          {
+            "name": "Aluminum Bolt 1/2\" 10mm Uncoated Coarse",
+            "score": 97.43589743589743
+          },
+          {
+            "name": "Aluminum Bolt 1/2\" 30mm Uncoated Coarse",
+            "score": 97.43589743589743
+          },
+          {
+            "name": "Aluminum Bolt 1/2\" 40mm Uncoated Coarse",
+            "score": 97.43589743589743
+          }
+        ],
+        "confirmed": null,
+        "description": "Aluminum Bolt 1/2\" 20mm Uncoated Coarse",
+        "match_id": 8
+      },
+      {
+        "choices": [
+          {
+            "name": "Stainless Steel Anchor M5 100mm Black Oxide Fine",
+            "score": 100.0
+          },
+          {
+            "name": "Stainless Steel Anchor M5 10mm Black Oxide Fine",
+            "score": 98.94736842105263
+          },
+          {
+            "name": "Stainless Steel Anchor M4 100mm Black Oxide Fine",
+            "score": 97.91666666666666
+          },
+          {
+            "name": "Stainless Steel Anchor M6 100mm Black Oxide Fine",
+            "score": 97.91666666666666
+          },
+          {
+            "name": "Stainless Steel Anchor M8 100mm Black Oxide Fine",
+            "score": 97.91666666666666
+          }
+        ],
+        "confirmed": null,
+        "description": "Stainless Steel Anchor M5 100mm Black Oxide Fine",
+        "match_id": 9
+      },
+      {
+        "choices": [
+          {
+            "name": "Steel Screw 1/2\" 20mm Zinc Plated Coarse",
+            "score": 100.0
+          },
+          {
+            "name": "Steel Screw 1/4\" 20mm Zinc Plated Coarse",
+            "score": 97.5
+          },
+          {
+            "name": "Steel Screw 1/2\" 10mm Zinc Plated Coarse",
+            "score": 97.5
+          },
+          {
+            "name": "Steel Screw 1/2\" 30mm Zinc Plated Coarse",
+            "score": 97.5
+          },
+          {
+            "name": "Steel Screw 1/2\" 40mm Zinc Plated Coarse",
+            "score": 97.5
+          }
+        ],
+        "confirmed": null,
+        "description": "Steel Screw 1/2\" 20mm Zinc Plated Coarse",
+        "match_id": 10
+      },
+      {
+        "choices": [
+          {
+            "name": "Steel Nut 1/2\" 30mm Nickel Plated Machine",
+            "score": 100.0
+          },
+          {
+            "name": "Steel Nut 1/4\" 30mm Nickel Plated Machine",
+            "score": 97.5609756097561
+          },
+          {
+            "name": "Steel Nut 1/2\" 10mm Nickel Plated Machine",
+            "score": 97.5609756097561
+          },
+          {
+            "name": "Steel Nut 1/2\" 20mm Nickel Plated Machine",
+            "score": 97.5609756097561
+          },
+          {
+            "name": "Steel Nut 1/2\" 40mm Nickel Plated Machine",
+            "score": 97.5609756097561
+          }
+        ],
+        "confirmed": null,
+        "description": "Steel Nut 1/2\" 30mm Nickel Plated Machine",
+        "match_id": 11
+      },
+      {
+        "choices": [
+          {
+            "name": "Brass Stud 1/4\" 30mm Zinc Plated Wood",
+            "score": 100.0
+          },
+          {
+            "name": "Brass Stud 1/4\" 10mm Zinc Plated Wood",
+            "score": 97.2972972972973
+          },
+          {
+            "name": "Brass Stud 1/4\" 20mm Zinc Plated Wood",
+            "score": 97.2972972972973
+          },
+          {
+            "name": "Brass Stud 1/4\" 40mm Zinc Plated Wood",
+            "score": 97.2972972972973
+          },
+          {
+            "name": "Brass Stud 1/4\" 50mm Zinc Plated Wood",
+            "score": 97.2972972972973
+          }
+        ],
+        "confirmed": null,
+        "description": "Brass Stud 1/4\" 30mm Zinc Plated Wood",
+        "match_id": 12
+      }
+    ]
+  },
+  {
+    "file": "Easy - 1.pdf",
+    "status": "success",
+    "doc_id": 2,
+    "items_count": 5,
+    "matches_count": 25,
+    "csv_size": 322,
+    "items": [
+      {
+        "choices": [
+          {
+            "name": "Brass Nut 1/2\" 20mm Galvanized Coarse",
+            "score": 87.05882352941177
+          },
+          {
+            "name": "Brass Nut 1/4\" 20mm Galvanized Coarse",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Brass Nut 1/2\" 10mm Galvanized Coarse",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Brass Nut 1/2\" 30mm Galvanized Coarse",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Brass Nut 1/2\" 40mm Galvanized Coarse",
+            "score": 84.70588235294117
+          }
+        ],
+        "confirmed": null,
+        "description": "Brass Nut 1/2\" 20mm Galvanized Coarse (Qty: 143)",
+        "match_id": 13
+      },
+      {
+        "choices": [
+          {
+            "name": "Stainless Steel Stud M6 10mm Galvanized Wood",
+            "score": 88.88888888888889
+          },
+          {
+            "name": "Stainless Steel Stud M6 100mm Galvanized Wood",
+            "score": 88.0
+          },
+          {
+            "name": "Stainless Steel Stud M4 10mm Galvanized Wood",
+            "score": 86.86868686868688
+          },
+          {
+            "name": "Stainless Steel Stud M5 10mm Galvanized Wood",
+            "score": 86.86868686868688
+          },
+          {
+            "name": "Stainless Steel Stud M6 20mm Galvanized Wood",
+            "score": 86.86868686868688
+          }
+        ],
+        "confirmed": null,
+        "description": "Stainless Steel Stud M6 10mm Galvanized Wood (Qty: 364)",
+        "match_id": 14
+      },
+      {
+        "choices": [
+          {
+            "name": "Aluminum Screw M10 30mm Nickel Plated Fine",
+            "score": 88.42105263157895
+          },
+          {
+            "name": "Aluminum Screw M10 10mm Nickel Plated Fine",
+            "score": 86.31578947368422
+          },
+          {
+            "name": "Aluminum Screw M10 20mm Nickel Plated Fine",
+            "score": 86.31578947368422
+          },
+          {
+            "name": "Aluminum Screw M10 40mm Nickel Plated Fine",
+            "score": 86.31578947368422
+          },
+          {
+            "name": "Aluminum Screw M10 50mm Nickel Plated Fine",
+            "score": 86.31578947368422
+          }
+        ],
+        "confirmed": null,
+        "description": "Aluminum Screw M10 30mm Nickel Plated Fine (Qty: 458)",
+        "match_id": 15
+      },
+      {
+        "choices": [
+          {
+            "name": "Steel Washer M6 20mm Uncoated Machine",
+            "score": 87.05882352941177
+          },
+          {
+            "name": "Steel Washer M4 20mm Uncoated Machine",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Steel Washer M5 20mm Uncoated Machine",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Steel Washer M6 10mm Uncoated Machine",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Steel Washer M6 30mm Uncoated Machine",
+            "score": 84.70588235294117
+          }
+        ],
+        "confirmed": null,
+        "description": "Steel Washer M6 20mm Uncoated Machine (Qty: 612)",
+        "match_id": 16
+      },
+      {
+        "choices": [
+          {
+            "name": "Stainless Steel Nut M5 50mm Nickel Plated Coarse",
+            "score": 89.7196261682243
+          },
+          {
+            "name": "Stainless Steel Nut M4 50mm Nickel Plated Coarse",
+            "score": 87.85046728971963
+          },
+          {
+            "name": "Stainless Steel Nut M5 10mm Nickel Plated Coarse",
+            "score": 87.85046728971963
+          },
+          {
+            "name": "Stainless Steel Nut M5 20mm Nickel Plated Coarse",
+            "score": 87.85046728971963
+          },
+          {
+            "name": "Stainless Steel Nut M5 30mm Nickel Plated Coarse",
+            "score": 87.85046728971963
+          }
+        ],
+        "confirmed": null,
+        "description": "Stainless Steel Nut M5 50mm Nickel Plated Coarse (Qty: 503)",
+        "match_id": 17
+      }
+    ]
+  },
+  {
+    "file": "Easy - 2.pdf",
+    "status": "success",
+    "doc_id": 3,
+    "items_count": 5,
+    "matches_count": 25,
+    "csv_size": 313,
+    "items": [
+      {
+        "choices": [
+          {
+            "name": "Brass Screw M5 10mm Uncoated Coarse",
+            "score": 86.41975308641976
+          },
+          {
+            "name": "Brass Screw M5 100mm Uncoated Coarse",
+            "score": 85.36585365853658
+          },
+          {
+            "name": "Brass Screw M4 10mm Uncoated Coarse",
+            "score": 83.9506172839506
+          },
+          {
+            "name": "Brass Screw M5 20mm Uncoated Coarse",
+            "score": 83.9506172839506
+          },
+          {
+            "name": "Brass Screw M5 30mm Uncoated Coarse",
+            "score": 83.9506172839506
+          }
+        ],
+        "confirmed": null,
+        "description": "Brass Screw M5 10mm Uncoated Coarse (Qty: 117)",
+        "match_id": 18
+      },
+      {
+        "choices": [
+          {
+            "name": "Aluminum Screw M4 40mm Zinc Plated Coarse",
+            "score": 89.13043478260869
+          },
+          {
+            "name": "Aluminum Screw M4 10mm Zinc Plated Coarse",
+            "score": 86.95652173913044
+          },
+          {
+            "name": "Aluminum Screw M4 20mm Zinc Plated Coarse",
+            "score": 86.95652173913044
+          },
+          {
+            "name": "Aluminum Screw M4 30mm Zinc Plated Coarse",
+            "score": 86.95652173913044
+          },
+          {
+            "name": "Aluminum Screw M4 50mm Zinc Plated Coarse",
+            "score": 86.95652173913044
+          }
+        ],
+        "confirmed": null,
+        "description": "Aluminum Screw M4 40mm Zinc Plated Coarse (Qty: 25)",
+        "match_id": 19
+      },
+      {
+        "choices": [
+          {
+            "name": "Titanium Anchor 1/2\" 40mm Nickel Plated Machine",
+            "score": 89.52380952380953
+          },
+          {
+            "name": "Titanium Anchor 1/4\" 40mm Nickel Plated Machine",
+            "score": 87.61904761904762
+          },
+          {
+            "name": "Titanium Anchor 1/2\" 10mm Nickel Plated Machine",
+            "score": 87.61904761904762
+          },
+          {
+            "name": "Titanium Anchor 1/2\" 20mm Nickel Plated Machine",
+            "score": 87.61904761904762
+          },
+          {
+            "name": "Titanium Anchor 1/2\" 30mm Nickel Plated Machine",
+            "score": 87.61904761904762
+          }
+        ],
+        "confirmed": null,
+        "description": "Titanium Anchor 1/2\" 40mm Nickel Plated Machine (Qty: 291)",
+        "match_id": 20
+      },
+      {
+        "choices": [
+          {
+            "name": "Aluminum Screw M12 20mm Uncoated Wood",
+            "score": 88.09523809523809
+          },
+          {
+            "name": "Aluminum Screw M10 20mm Uncoated Wood",
+            "score": 85.71428571428572
+          },
+          {
+            "name": "Aluminum Screw M12 10mm Uncoated Wood",
+            "score": 85.71428571428572
+          },
+          {
+            "name": "Aluminum Screw M12 30mm Uncoated Wood",
+            "score": 85.71428571428572
+          },
+          {
+            "name": "Aluminum Screw M12 40mm Uncoated Wood",
+            "score": 85.71428571428572
+          }
+        ],
+        "confirmed": null,
+        "description": "Aluminum Screw M12 20mm Uncoated Wood (Qty: 46)",
+        "match_id": 21
+      },
+      {
+        "choices": [
+          {
+            "name": "Titanium Screw M6 40mm Zinc Plated Coarse",
+            "score": 88.17204301075269
+          },
+          {
+            "name": "Titanium Screw M4 40mm Zinc Plated Coarse",
+            "score": 86.02150537634408
+          },
+          {
+            "name": "Titanium Screw M5 40mm Zinc Plated Coarse",
+            "score": 86.02150537634408
+          },
+          {
+            "name": "Titanium Screw M6 10mm Zinc Plated Coarse",
+            "score": 86.02150537634408
+          },
+          {
+            "name": "Titanium Screw M6 20mm Zinc Plated Coarse",
+            "score": 86.02150537634408
+          }
+        ],
+        "confirmed": null,
+        "description": "Titanium Screw M6 40mm Zinc Plated Coarse (Qty: 505)",
+        "match_id": 22
+      }
+    ]
+  },
+  {
+    "file": "Easy - 3.pdf",
+    "status": "success",
+    "doc_id": 4,
+    "items_count": 7,
+    "matches_count": 35,
+    "csv_size": 429,
+    "items": [
+      {
+        "choices": [
+          {
+            "name": "Steel Nut 1/2\" 30mm Nickel Plated Machine",
+            "score": 88.17204301075269
+          },
+          {
+            "name": "Steel Nut 1/4\" 30mm Nickel Plated Machine",
+            "score": 86.02150537634408
+          },
+          {
+            "name": "Steel Nut 1/2\" 10mm Nickel Plated Machine",
+            "score": 86.02150537634408
+          },
+          {
+            "name": "Steel Nut 1/2\" 20mm Nickel Plated Machine",
+            "score": 86.02150537634408
+          },
+          {
+            "name": "Steel Nut 1/2\" 40mm Nickel Plated Machine",
+            "score": 86.02150537634408
+          }
+        ],
+        "confirmed": null,
+        "description": "Steel Nut 1/2\" 30mm Nickel Plated Machine (Qty: 117)",
+        "match_id": 23
+      },
+      {
+        "choices": [
+          {
+            "name": "Brass Stud 1/4\" 30mm Zinc Plated Wood",
+            "score": 88.09523809523809
+          },
+          {
+            "name": "Brass Stud 1/4\" 10mm Zinc Plated Wood",
+            "score": 85.71428571428572
+          },
+          {
+            "name": "Brass Stud 1/4\" 20mm Zinc Plated Wood",
+            "score": 85.71428571428572
+          },
+          {
+            "name": "Brass Stud 1/4\" 40mm Zinc Plated Wood",
+            "score": 85.71428571428572
+          },
+          {
+            "name": "Brass Stud 1/4\" 50mm Zinc Plated Wood",
+            "score": 85.71428571428572
+          }
+        ],
+        "confirmed": null,
+        "description": "Brass Stud 1/4\" 30mm Zinc Plated Wood (Qty: 25)",
+        "match_id": 24
+      },
+      {
+        "choices": [
+          {
+            "name": "Aluminum Bolt 1/2\" 20mm Uncoated Coarse",
+            "score": 87.64044943820225
+          },
+          {
+            "name": "Aluminum Bolt 1/4\" 20mm Uncoated Coarse",
+            "score": 85.39325842696628
+          },
+          {
+            "name": "Aluminum Bolt 1/2\" 10mm Uncoated Coarse",
+            "score": 85.39325842696628
+          },
+          {
+            "name": "Aluminum Bolt 1/2\" 30mm Uncoated Coarse",
+            "score": 85.39325842696628
+          },
+          {
+            "name": "Aluminum Bolt 1/2\" 40mm Uncoated Coarse",
+            "score": 85.39325842696628
+          }
+        ],
+        "confirmed": null,
+        "description": "Aluminum Bolt 1/2\" 20mm Uncoated Coarse (Qty: 291)",
+        "match_id": 25
+      },
+      {
+        "choices": [
+          {
+            "name": "Stainless Steel Anchor M5 100mm Black Oxide Fine",
+            "score": 90.56603773584906
+          },
+          {
+            "name": "Stainless Steel Anchor M5 10mm Black Oxide Fine",
+            "score": 89.52380952380953
+          },
+          {
+            "name": "Stainless Steel Anchor M4 100mm Black Oxide Fine",
+            "score": 88.67924528301887
+          },
+          {
+            "name": "Stainless Steel Anchor M6 100mm Black Oxide Fine",
+            "score": 88.67924528301887
+          },
+          {
+            "name": "Stainless Steel Anchor M8 100mm Black Oxide Fine",
+            "score": 88.67924528301887
+          }
+        ],
+        "confirmed": null,
+        "description": "Stainless Steel Anchor M5 100mm Black Oxide Fine (Qty: 46)",
+        "match_id": 26
+      },
+      {
+        "choices": [
+          {
+            "name": "Steel Screw 1/2\" 20mm Zinc Plated Coarse",
+            "score": 87.91208791208791
+          },
+          {
+            "name": "Steel Screw 1/4\" 20mm Zinc Plated Coarse",
+            "score": 85.71428571428572
+          },
+          {
+            "name": "Steel Screw 1/2\" 10mm Zinc Plated Coarse",
+            "score": 85.71428571428572
+          },
+          {
+            "name": "Steel Screw 1/2\" 30mm Zinc Plated Coarse",
+            "score": 85.71428571428572
+          },
+          {
+            "name": "Steel Screw 1/2\" 40mm Zinc Plated Coarse",
+            "score": 85.71428571428572
+          }
+        ],
+        "confirmed": null,
+        "description": "Steel Screw 1/2\" 20mm Zinc Plated Coarse (Qty: 505)",
+        "match_id": 27
+      },
+      {
+        "choices": [
+          {
+            "name": "Steel Nut 1/2\" 30mm Nickel Plated Machine",
+            "score": 88.17204301075269
+          },
+          {
+            "name": "Steel Nut 1/4\" 30mm Nickel Plated Machine",
+            "score": 86.02150537634408
+          },
+          {
+            "name": "Steel Nut 1/2\" 10mm Nickel Plated Machine",
+            "score": 86.02150537634408
+          },
+          {
+            "name": "Steel Nut 1/2\" 20mm Nickel Plated Machine",
+            "score": 86.02150537634408
+          },
+          {
+            "name": "Steel Nut 1/2\" 40mm Nickel Plated Machine",
+            "score": 86.02150537634408
+          }
+        ],
+        "confirmed": null,
+        "description": "Steel Nut 1/2\" 30mm Nickel Plated Machine (Qty: 116)",
+        "match_id": 28
+      },
+      {
+        "choices": [
+          {
+            "name": "Brass Stud 1/4\" 30mm Zinc Plated Wood",
+            "score": 87.05882352941177
+          },
+          {
+            "name": "Brass Stud 1/4\" 10mm Zinc Plated Wood",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Brass Stud 1/4\" 20mm Zinc Plated Wood",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Brass Stud 1/4\" 40mm Zinc Plated Wood",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Brass Stud 1/4\" 50mm Zinc Plated Wood",
+            "score": 84.70588235294117
+          }
+        ],
+        "confirmed": null,
+        "description": "Brass Stud 1/4\" 30mm Zinc Plated Wood (Qty: 116)",
+        "match_id": 29
+      }
+    ]
+  },
+  {
+    "file": "Hard - 1.pdf",
+    "status": "success",
+    "doc_id": 5,
+    "items_count": 3,
+    "matches_count": 15,
+    "csv_size": 214,
+    "items": [
+      {
+        "choices": [
+          {
+            "name": "Brass Nut 1/2\" 20mm Galvanized Coarse",
+            "score": 84.0909090909091
+          },
+          {
+            "name": "Brass Nut 1/4\" 20mm Galvanized Coarse",
+            "score": 81.81818181818181
+          },
+          {
+            "name": "Brass Nut 1/2\" 10mm Galvanized Coarse",
+            "score": 81.81818181818181
+          },
+          {
+            "name": "Brass Nut 1/2\" 30mm Galvanized Coarse",
+            "score": 81.81818181818181
+          },
+          {
+            "name": "Brass Nut 1/2\" 40mm Galvanized Coarse",
+            "score": 81.81818181818181
+          }
+        ],
+        "confirmed": null,
+        "description": "Brass Nut 1/2\" 20mm Galvanized Coarse (Qty: 413.28)",
+        "match_id": 30
+      },
+      {
+        "choices": [
+          {
+            "name": "Aluminum Screw M10 30mm Nickel Plated Fine",
+            "score": 86.5979381443299
+          },
+          {
+            "name": "Aluminum Screw M10 10mm Nickel Plated Fine",
+            "score": 84.5360824742268
+          },
+          {
+            "name": "Aluminum Screw M10 20mm Nickel Plated Fine",
+            "score": 84.5360824742268
+          },
+          {
+            "name": "Aluminum Screw M10 40mm Nickel Plated Fine",
+            "score": 84.5360824742268
+          },
+          {
+            "name": "Aluminum Screw M10 50mm Nickel Plated Fine",
+            "score": 84.5360824742268
+          }
+        ],
+        "confirmed": null,
+        "description": "Aluminum Screw M10 30mm Nickel Plated Fine (Qty: 412.8)",
+        "match_id": 31
+      },
+      {
+        "choices": [
+          {
+            "name": "Stainless Steel Nut M5 50mm Nickel Plated Coarse",
+            "score": 88.07339449541286
+          },
+          {
+            "name": "Stainless Steel Nut M4 50mm Nickel Plated Coarse",
+            "score": 86.23853211009174
+          },
+          {
+            "name": "Stainless Steel Nut M5 10mm Nickel Plated Coarse",
+            "score": 86.23853211009174
+          },
+          {
+            "name": "Stainless Steel Nut M5 20mm Nickel Plated Coarse",
+            "score": 86.23853211009174
+          },
+          {
+            "name": "Stainless Steel Nut M5 30mm Nickel Plated Coarse",
+            "score": 86.23853211009174
+          }
+        ],
+        "confirmed": null,
+        "description": "Stainless Steel Nut M5 50mm Nickel Plated Coarse (Qty: 619.2)",
+        "match_id": 32
+      }
+    ]
+  },
+  {
+    "file": "Hard - 2.pdf",
+    "status": "success",
+    "doc_id": 6,
+    "items_count": 2,
+    "matches_count": 10,
+    "csv_size": 117,
+    "items": [
+      {
+        "choices": [
+          {
+            "name": "Titanium Washer M4 30mm Galvanized Fine",
+            "score": 100.0
+          },
+          {
+            "name": "Titanium Washer M4 10mm Galvanized Fine",
+            "score": 97.43589743589743
+          },
+          {
+            "name": "Titanium Washer M4 20mm Galvanized Fine",
+            "score": 97.43589743589743
+          },
+          {
+            "name": "Titanium Washer M4 40mm Galvanized Fine",
+            "score": 97.43589743589743
+          },
+          {
+            "name": "Titanium Washer M4 50mm Galvanized Fine",
+            "score": 97.43589743589743
+          }
+        ],
+        "confirmed": null,
+        "description": "Titanium Washer M4 30mm Galvanized Fine",
+        "match_id": 33
+      },
+      {
+        "choices": [
+          {
+            "name": "Aluminum Stud M4 30mm Uncoated Coarse",
+            "score": 100.0
+          },
+          {
+            "name": "Aluminum Stud M4 10mm Uncoated Coarse",
+            "score": 97.2972972972973
+          },
+          {
+            "name": "Aluminum Stud M4 20mm Uncoated Coarse",
+            "score": 97.2972972972973
+          },
+          {
+            "name": "Aluminum Stud M4 40mm Uncoated Coarse",
+            "score": 97.2972972972973
+          },
+          {
+            "name": "Aluminum Stud M4 50mm Uncoated Coarse",
+            "score": 97.2972972972973
+          }
+        ],
+        "confirmed": null,
+        "description": "Aluminum Stud M4 30mm Uncoated Coarse",
+        "match_id": 34
+      }
+    ]
+  },
+  {
+    "file": "Hard -3.pdf",
+    "status": "success",
+    "doc_id": 7,
+    "items_count": 3,
+    "matches_count": 15,
+    "csv_size": 153,
+    "items": [
+      {
+        "choices": [
+          {
+            "name": "Steel Bolt M6 50mm Galvanized Fine",
+            "score": 100.0
+          },
+          {
+            "name": "Steel Bolt M4 50mm Galvanized Fine",
+            "score": 97.05882352941177
+          },
+          {
+            "name": "Steel Bolt M5 50mm Galvanized Fine",
+            "score": 97.05882352941177
+          },
+          {
+            "name": "Steel Bolt M6 10mm Galvanized Fine",
+            "score": 97.05882352941177
+          },
+          {
+            "name": "Steel Bolt M6 20mm Galvanized Fine",
+            "score": 97.05882352941177
+          }
+        ],
+        "confirmed": null,
+        "description": "Steel Bolt M6 50mm Galvanized Fine",
+        "match_id": 35
+      },
+      {
+        "choices": [
+          {
+            "name": "Titanium Nut 1/4\" 50mm Uncoated Fine",
+            "score": 100.0
+          },
+          {
+            "name": "Titanium Nut 1/4\" 10mm Uncoated Fine",
+            "score": 97.22222222222221
+          },
+          {
+            "name": "Titanium Nut 1/4\" 20mm Uncoated Fine",
+            "score": 97.22222222222221
+          },
+          {
+            "name": "Titanium Nut 1/4\" 30mm Uncoated Fine",
+            "score": 97.22222222222221
+          },
+          {
+            "name": "Titanium Nut 1/4\" 40mm Uncoated Fine",
+            "score": 97.22222222222221
+          }
+        ],
+        "confirmed": null,
+        "description": "Titanium Nut 1/4\" 50mm Uncoated Fine",
+        "match_id": 36
+      },
+      {
+        "choices": [
+          {
+            "name": "Brass Stud 1/4\" 40mm Uncoated Coarse",
+            "score": 100.0
+          },
+          {
+            "name": "Brass Stud 1/4\" 10mm Uncoated Coarse",
+            "score": 97.22222222222221
+          },
+          {
+            "name": "Brass Stud 1/4\" 20mm Uncoated Coarse",
+            "score": 97.22222222222221
+          },
+          {
+            "name": "Brass Stud 1/4\" 30mm Uncoated Coarse",
+            "score": 97.22222222222221
+          },
+          {
+            "name": "Brass Stud 1/4\" 50mm Uncoated Coarse",
+            "score": 97.22222222222221
+          }
+        ],
+        "confirmed": null,
+        "description": "Brass Stud 1/4\" 40mm Uncoated Coarse",
+        "match_id": 37
+      }
+    ]
+  },
+  {
+    "file": "Medium - 1.pdf",
+    "status": "success",
+    "doc_id": 8,
+    "items_count": 5,
+    "matches_count": 25,
+    "csv_size": 322,
+    "items": [
+      {
+        "choices": [
+          {
+            "name": "Brass Nut 1/2\" 20mm Galvanized Coarse",
+            "score": 87.05882352941177
+          },
+          {
+            "name": "Brass Nut 1/4\" 20mm Galvanized Coarse",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Brass Nut 1/2\" 10mm Galvanized Coarse",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Brass Nut 1/2\" 30mm Galvanized Coarse",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Brass Nut 1/2\" 40mm Galvanized Coarse",
+            "score": 84.70588235294117
+          }
+        ],
+        "confirmed": null,
+        "description": "Brass Nut 1/2\" 20mm Galvanized Coarse (Qty: 143)",
+        "match_id": 38
+      },
+      {
+        "choices": [
+          {
+            "name": "Stainless Steel Stud M6 10mm Galvanized Wood",
+            "score": 88.88888888888889
+          },
+          {
+            "name": "Stainless Steel Stud M6 100mm Galvanized Wood",
+            "score": 88.0
+          },
+          {
+            "name": "Stainless Steel Stud M4 10mm Galvanized Wood",
+            "score": 86.86868686868688
+          },
+          {
+            "name": "Stainless Steel Stud M5 10mm Galvanized Wood",
+            "score": 86.86868686868688
+          },
+          {
+            "name": "Stainless Steel Stud M6 20mm Galvanized Wood",
+            "score": 86.86868686868688
+          }
+        ],
+        "confirmed": null,
+        "description": "Stainless Steel Stud M6 10mm Galvanized Wood (Qty: 364)",
+        "match_id": 39
+      },
+      {
+        "choices": [
+          {
+            "name": "Aluminum Screw M10 30mm Nickel Plated Fine",
+            "score": 88.42105263157895
+          },
+          {
+            "name": "Aluminum Screw M10 10mm Nickel Plated Fine",
+            "score": 86.31578947368422
+          },
+          {
+            "name": "Aluminum Screw M10 20mm Nickel Plated Fine",
+            "score": 86.31578947368422
+          },
+          {
+            "name": "Aluminum Screw M10 40mm Nickel Plated Fine",
+            "score": 86.31578947368422
+          },
+          {
+            "name": "Aluminum Screw M10 50mm Nickel Plated Fine",
+            "score": 86.31578947368422
+          }
+        ],
+        "confirmed": null,
+        "description": "Aluminum Screw M10 30mm Nickel Plated Fine (Qty: 458)",
+        "match_id": 40
+      },
+      {
+        "choices": [
+          {
+            "name": "Steel Washer M6 20mm Uncoated Machine",
+            "score": 87.05882352941177
+          },
+          {
+            "name": "Steel Washer M4 20mm Uncoated Machine",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Steel Washer M5 20mm Uncoated Machine",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Steel Washer M6 10mm Uncoated Machine",
+            "score": 84.70588235294117
+          },
+          {
+            "name": "Steel Washer M6 30mm Uncoated Machine",
+            "score": 84.70588235294117
+          }
+        ],
+        "confirmed": null,
+        "description": "Steel Washer M6 20mm Uncoated Machine (Qty: 612)",
+        "match_id": 41
+      },
+      {
+        "choices": [
+          {
+            "name": "Stainless Steel Nut M5 50mm Nickel Plated Coarse",
+            "score": 89.7196261682243
+          },
+          {
+            "name": "Stainless Steel Nut M4 50mm Nickel Plated Coarse",
+            "score": 87.85046728971963
+          },
+          {
+            "name": "Stainless Steel Nut M5 10mm Nickel Plated Coarse",
+            "score": 87.85046728971963
+          },
+          {
+            "name": "Stainless Steel Nut M5 20mm Nickel Plated Coarse",
+            "score": 87.85046728971963
+          },
+          {
+            "name": "Stainless Steel Nut M5 30mm Nickel Plated Coarse",
+            "score": 87.85046728971963
+          }
+        ],
+        "confirmed": null,
+        "description": "Stainless Steel Nut M5 50mm Nickel Plated Coarse (Qty: 503)",
+        "match_id": 42
+      }
+    ]
+  },
+  {
+    "file": "Medium - 2.pdf",
+    "status": "success",
+    "doc_id": 9,
+    "items_count": 5,
+    "matches_count": 25,
+    "csv_size": 260,
+    "items": [
+      {
+        "choices": [
+          {
+            "name": "Brass Screw M5 10mm Uncoated Coarse",
+            "score": 100.0
+          },
+          {
+            "name": "Brass Screw M5 100mm Uncoated Coarse",
+            "score": 98.59154929577466
+          },
+          {
+            "name": "Brass Screw M4 10mm Uncoated Coarse",
+            "score": 97.14285714285714
+          },
+          {
+            "name": "Brass Screw M5 20mm Uncoated Coarse",
+            "score": 97.14285714285714
+          },
+          {
+            "name": "Brass Screw M5 30mm Uncoated Coarse",
+            "score": 97.14285714285714
+          }
+        ],
+        "confirmed": null,
+        "description": "Brass Screw M5 10mm Uncoated Coarse",
+        "match_id": 43
+      },
+      {
+        "choices": [
+          {
+            "name": "Aluminum Screw M4 40mm Zinc Plated Coarse",
+            "score": 100.0
+          },
+          {
+            "name": "Aluminum Screw M4 10mm Zinc Plated Coarse",
+            "score": 97.5609756097561
+          },
+          {
+            "name": "Aluminum Screw M4 20mm Zinc Plated Coarse",
+            "score": 97.5609756097561
+          },
+          {
+            "name": "Aluminum Screw M4 30mm Zinc Plated Coarse",
+            "score": 97.5609756097561
+          },
+          {
+            "name": "Aluminum Screw M4 50mm Zinc Plated Coarse",
+            "score": 97.5609756097561
+          }
+        ],
+        "confirmed": null,
+        "description": "Aluminum Screw M4 40mm Zinc Plated Coarse",
+        "match_id": 44
+      },
+      {
+        "choices": [
+          {
+            "name": "Titanium Anchor 1/2\" 40mm Nickel Plated Machine",
+            "score": 100.0
+          },
+          {
+            "name": "Titanium Anchor 1/4\" 40mm Nickel Plated Machine",
+            "score": 97.87234042553192
+          },
+          {
+            "name": "Titanium Anchor 1/2\" 10mm Nickel Plated Machine",
+            "score": 97.87234042553192
+          },
+          {
+            "name": "Titanium Anchor 1/2\" 20mm Nickel Plated Machine",
+            "score": 97.87234042553192
+          },
+          {
+            "name": "Titanium Anchor 1/2\" 30mm Nickel Plated Machine",
+            "score": 97.87234042553192
+          }
+        ],
+        "confirmed": null,
+        "description": "Titanium Anchor 1/2\" 40mm Nickel Plated Machine",
+        "match_id": 45
+      },
+      {
+        "choices": [
+          {
+            "name": "Aluminum Screw M12 20mm Uncoated Wood",
+            "score": 100.0
+          },
+          {
+            "name": "Aluminum Screw M10 20mm Uncoated Wood",
+            "score": 97.2972972972973
+          },
+          {
+            "name": "Aluminum Screw M12 10mm Uncoated Wood",
+            "score": 97.2972972972973
+          },
+          {
+            "name": "Aluminum Screw M12 30mm Uncoated Wood",
+            "score": 97.2972972972973
+          },
+          {
+            "name": "Aluminum Screw M12 40mm Uncoated Wood",
+            "score": 97.2972972972973
+          }
+        ],
+        "confirmed": null,
+        "description": "Aluminum Screw M12 20mm Uncoated Wood",
+        "match_id": 46
+      },
+      {
+        "choices": [
+          {
+            "name": "Titanium Screw M6 40mm Zinc Plated Coarse",
+            "score": 100.0
+          },
+          {
+            "name": "Titanium Screw M4 40mm Zinc Plated Coarse",
+            "score": 97.5609756097561
+          },
+          {
+            "name": "Titanium Screw M5 40mm Zinc Plated Coarse",
+            "score": 97.5609756097561
+          },
+          {
+            "name": "Titanium Screw M6 10mm Zinc Plated Coarse",
+            "score": 97.5609756097561
+          },
+          {
+            "name": "Titanium Screw M6 20mm Zinc Plated Coarse",
+            "score": 97.5609756097561
+          }
+        ],
+        "confirmed": null,
+        "description": "Titanium Screw M6 40mm Zinc Plated Coarse",
+        "match_id": 47
+      }
+    ]
+  }
+]

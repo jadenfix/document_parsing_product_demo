@@ -21,7 +21,7 @@
           <strong>Drag & drop your PDF here</strong> or click to browse
         </div>
         <div class="upload-hint">
-          Supports: Easy-1.pdf through Hard-3.pdf format
+          Supports: PDF Files
         </div>
         <input type="file" id="file-input" name="file" accept=".pdf" class="d-none" required>
       </div>
@@ -52,7 +52,6 @@
             <tr>
               <th>Extracted Description</th>
               <th>Select Best Match</th>
-              <th>Confidence</th>
             </tr>
           </thead>
           <tbody>
@@ -63,9 +62,9 @@
                 <div class="text-muted small mt-1">Item {{ loop.index }}</div>
               </td>
               <td>
-                <select class="modern-select" name="confirmed_{{ row.index }}" required>
+                <select class="modern-select" name="{{ row.match_id }}" required>
                   <option value="">Choose a match...</option>
-                                     {% for choice in row.choices %}
+                  {% for choice in row.choices %}
                    <option value="{{ loop.index0 }}" 
                      {% if loop.index0 == 0 %}selected{% endif %}>
                      {{ choice.name }} ({{ "%.1f"|format(choice.score * 100) }}% match)
@@ -73,14 +72,6 @@
                    {% endfor %}
                 </select>
               </td>
-                             <td>
-                 {% if row.choices %}
-                   {% set best_score = row.choices[0].score %}
-                   <span class="badge {% if best_score > 0.9 %}bg-success{% elif best_score > 0.7 %}bg-warning{% else %}bg-secondary{% endif %}">
-                     {{ "%.1f"|format(best_score * 100) }}%
-                   </span>
-                 {% endif %}
-               </td>
             </tr>
             {% endfor %}
           </tbody>

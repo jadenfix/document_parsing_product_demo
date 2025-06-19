@@ -3,10 +3,16 @@
 > **Production-Ready Manufacturing Trade Document Intelligence**  
 > *Automated extraction • Smart catalog matching • Human verification workflows*
 
-[![Tests](https://img.shields.io/badge/tests-7%2F7%20passing-brightgreen)](./tests/)
-[![Architecture](https://img.shields.io/badge/architecture-enterprise%20grade-blue)](#architecture)
-[![API Integration](https://img.shields.io/badge/API-production%20endpoints-orange)](#api-integration)
+[![Tests](https://img.shields.io/badge/tests-7%2F7%20passing-brightgreen)](./tests/)  
+[![Architecture](https://img.shields.io/badge/architecture-enterprise%20grade-blue)](#architecture)  
+[![API Integration](https://img.shields.io/badge/API-production%20endpoints-orange)](#api-integration)  
 [![Uptime](https://img.shields.io/badge/uptime-99.9%25-green)](#hybrid-resilience)
+
+---
+
+## 🎥 Demo
+
+[![Watch the Demo on Loom](https://img.shields.io/badge/Watch%20Demo-Loom-00CFE8?logo=loom&logoColor=white)](https://www.loom.com/share/4a10380f5eb446b7ae6a4143dd41af8d?sid=612284aa-f074-4976-b364-b8792ff6dcb8)
 
 ---
 

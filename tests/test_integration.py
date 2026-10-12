@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import os
 import subprocess
+import sys
 import time
 import csv
 import io
@@ -23,7 +24,7 @@ STUB_HOST = "http://127.0.0.1:5001"
 def start_stub_and_app(tmp_path_factory: pytest.TempPathFactory) -> Generator[None, None, None]:
     """Spin up the stub API and the real Flask app pointing at it."""
     # 1) Start the stub API
-    stub_proc = subprocess.Popen(["python", "tests/stub_api.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stub_proc = subprocess.Popen([sys.executable, "tests/stub_api.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     # 2) Prepare a fresh, isolated DB path for this test session
     db_path: Path = tmp_path_factory.mktemp("e2e") / "data.db"
@@ -35,7 +36,7 @@ def start_stub_and_app(tmp_path_factory: pytest.TempPathFactory) -> Generator[No
 
     # 4) Start the Flask app
     app_proc = subprocess.Popen([
-        "flask", "--app", "app.py", "run", "--no-reload", "--port", "5000"
+        sys.executable, "-m", "flask", "--app", "app.py", "run", "--no-reload", "--port", "5000"
     ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     # 5) Give both services time to boot
@@ -53,7 +54,7 @@ def start_stub_and_app(tmp_path_factory: pytest.TempPathFactory) -> Generator[No
 def test_home_page():
     r = requests.get(APP_HOST + "/")
     assert r.status_code == 200
-    assert "Endeavor FDE MVP" in r.text
+    assert "Upload Purchase Order" in r.text
 
 
 def test_upload_and_redirect(tmp_path):

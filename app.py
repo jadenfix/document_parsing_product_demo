@@ -20,6 +20,7 @@ from flask import Flask, request, render_template, redirect, url_for, Response
 import csv
 import io
 from fuzzywuzzy import fuzz, process
+from werkzeug.utils import secure_filename
 
 # ---- CONFIG ----
 from logging.config import dictConfig
@@ -78,6 +79,7 @@ executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 def init_db() -> None:
     """Initialize the SQLite database and run migrations if necessary."""
+    os.makedirs(os.path.dirname(_current_db_path()) or ".", exist_ok=True)
     conn = sqlite3.connect(_current_db_path())
     conn.executescript(
         """
@@ -219,24 +221,30 @@ def home():
 @app.route("/upload", methods=["POST"])
 def upload():
     """Handle PDF upload, save file, create document record, and queue parsing."""
-    uploaded_file = request.files["file"]
-    path = os.path.join(UPLOAD_FOLDER, uploaded_file.filename)
+    uploaded_file = request.files.get("file")
+    if uploaded_file is None or not uploaded_file.filename:
+        return {"error": "A PDF file is required"}, 400
+    filename = secure_filename(uploaded_file.filename)
+    if not filename or not filename.lower().endswith(".pdf"):
+        return {"error": "A PDF filename is required"}, 400
+    path = os.path.join(UPLOAD_FOLDER, filename)
     uploaded_file.save(path)
 
     conn = db_conn()
     c = conn.cursor()
-    c.execute("INSERT OR IGNORE INTO documents(name) VALUES(?)", (uploaded_file.filename,))
+    c.execute("INSERT OR IGNORE INTO documents(name) VALUES(?)", (filename,))
     conn.commit()
 
     doc_id = c.execute(
-        "SELECT id FROM documents WHERE name=?", (uploaded_file.filename,)
+        "SELECT id FROM documents WHERE name=?", (filename,)
     ).fetchone()["id"]
 
     # Parse document either synchronously or in a background thread
     if SYNC_PARSE:
-        parse_and_store(doc_id, uploaded_file.filename)
+        parse_and_store(doc_id, filename)
     else:
-        executor.submit(parse_and_store, doc_id, uploaded_file.filename)
+        executor.submit(parse_and_store, doc_id, filename)
+    conn.close()
 
     return redirect(url_for("review", doc_id=doc_id))
 
@@ -355,9 +363,24 @@ def confirm(doc_id: int):
     conn = db_conn()
     c = conn.cursor()
 
-    # Update confirmed IDs
+    # Validate the complete request before writing any selections.
+    selections = []
     for mid, sel in request.form.items():
-        c.execute("UPDATE matches SET confirmed_id=? WHERE id=?", (int(sel), int(mid)))
+        try:
+            match_id, selected = int(mid), int(sel)
+        except ValueError:
+            conn.close()
+            return {"error": "Match and choice IDs must be integers"}, 400
+        match = c.execute(
+            "SELECT m.choice_json FROM matches m JOIN line_items li "
+            "ON li.id=m.line_item_id WHERE m.id=? AND li.document_id=?",
+            (match_id, doc_id),
+        ).fetchone()
+        if match is None or not 0 <= selected < len(json.loads(match["choice_json"])):
+            conn.close()
+            return {"error": "Invalid match or choice for this document"}, 400
+        selections.append((selected, match_id))
+    c.executemany("UPDATE matches SET confirmed_id=? WHERE id=?", selections)
     conn.commit()
 
     # Fetch data for CSV
@@ -377,6 +400,7 @@ def confirm(doc_id: int):
         )
     ]
 
+    conn.close()
     return Response(
         stream_csv(rows),
         mimetype="text/csv",

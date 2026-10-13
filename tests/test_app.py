@@ -99,3 +99,60 @@ def test_database_initialization_creates_parent(tmp_path, monkeypatch):
     monkeypatch.setenv("DB_PATH", str(database))
     init_db()
     assert database.exists()
+
+
+def _upload_for_parse(client, tmp_path, monkeypatch):
+    monkeypatch.setattr(app_module, 'UPLOAD_FOLDER', str(tmp_path))
+    monkeypatch.setattr(app_module, 'SYNC_PARSE', True)
+    return client.post('/upload', data={'file': (io.BytesIO(b'%PDF'), 'state.pdf')})
+
+
+def test_extraction_timeout_is_persisted_and_visible(client, tmp_path, monkeypatch):
+    import requests
+    calls = []
+    def timeout(*args, **kwargs):
+        calls.append(kwargs['timeout'])
+        raise requests.Timeout('provider secret response must not be shown')
+    monkeypatch.setattr(app_module.requests, 'post', timeout)
+    assert _upload_for_parse(client, tmp_path, monkeypatch).status_code == 302
+    status = client.get('/status/1').json
+    assert status['status'] == 'failed'
+    assert 'timed out' in status['error']
+    assert 'secret' not in status['error']
+    assert calls == [app_module.PROVIDER_TIMEOUT]
+    review = client.get('/review/1')
+    assert review.status_code == 502 and b'Document processing failed' in review.data
+    assert client.post('/confirm/1').status_code == 409
+    init_db()
+    assert client.get('/status/1').json == status
+
+
+def test_processing_has_a_status_and_rejects_export(client, tmp_path, monkeypatch):
+    monkeypatch.setattr(app_module, 'UPLOAD_FOLDER', str(tmp_path))
+    monkeypatch.setattr(app_module, 'SYNC_PARSE', False)
+    monkeypatch.setattr(app_module.executor, 'submit', lambda *args: None)
+    client.post('/upload', data={'file': (io.BytesIO(b'%PDF'), 'queued.pdf')})
+    assert client.get('/status/1').json['status'] == 'queued'
+    assert client.get('/review/1').status_code == 202
+    assert b'in progress' in client.get('/review/1').data
+    assert client.post('/confirm/1').status_code == 409
+    init_db()
+    assert client.get('/status/1').json['status'] == 'failed'
+    assert 'interrupted' in client.get('/status/1').json['error']
+
+
+@pytest.mark.parametrize('payload', [{'error': 'not items'}, [None], [{'other': 'not description'}]])
+def test_malformed_extraction_does_not_become_ready(client, tmp_path, monkeypatch, payload):
+    class Response:
+        def raise_for_status(self): pass
+        def json(self): return payload
+    monkeypatch.setattr(app_module.requests, 'post', lambda *args, **kwargs: Response())
+    _upload_for_parse(client, tmp_path, monkeypatch)
+    assert client.get('/status/1').json['status'] == 'failed'
+    with app_module.db_conn() as conn:
+        assert conn.execute('SELECT COUNT(*) FROM line_items').fetchone()[0] == 0
+
+
+def test_missing_document_returns_not_found(client):
+    assert client.get('/status/999').status_code == 404
+    assert client.get('/review/999').status_code == 404

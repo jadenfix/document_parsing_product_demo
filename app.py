@@ -19,6 +19,7 @@ import requests
 from flask import Flask, request, render_template, redirect, url_for, Response
 import csv
 import io
+import math
 from fuzzywuzzy import fuzz, process
 from werkzeug.utils import secure_filename
 
@@ -56,7 +57,10 @@ else:
 
 # App configuration
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "4"))
-UPLOAD_FOLDER = "uploads"
+UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "uploads")
+PROVIDER_TIMEOUT = (float(os.getenv("PROVIDER_CONNECT_TIMEOUT", "5")), float(os.getenv("PROVIDER_READ_TIMEOUT", "30")))
+if not all(math.isfinite(value) and value > 0 for value in PROVIDER_TIMEOUT):
+    raise ValueError("Provider timeouts must be positive finite seconds")
 
 # Store default path but always look up env when connecting
 DEFAULT_DB_PATH = os.getenv("DB_PATH", "data.db")
@@ -115,6 +119,13 @@ def init_db() -> None:
     CREATE UNIQUE INDEX IF NOT EXISTS idx_line_unique ON line_items(document_id, raw_index);
     """
     )
+    columns = {row[1] for row in conn.execute("PRAGMA table_info(documents)")}
+    if "status" not in columns:
+        conn.execute("ALTER TABLE documents ADD COLUMN status TEXT NOT NULL DEFAULT 'ready'")
+    if "error" not in columns:
+        conn.execute("ALTER TABLE documents ADD COLUMN error TEXT")
+    # Thread-pool work cannot survive a process restart. Keep interrupted jobs visible.
+    conn.execute("UPDATE documents SET status='failed', error='Processing was interrupted. Upload the document again.' WHERE status IN ('queued', 'processing')")
     conn.commit()
     conn.close()
 
@@ -239,12 +250,15 @@ def upload():
         "SELECT id FROM documents WHERE name=?", (filename,)
     ).fetchone()["id"]
 
+    c.execute("UPDATE documents SET status='queued', error=NULL WHERE id=?", (doc_id,))
+    conn.commit()
+    conn.close()
+
     # Parse document either synchronously or in a background thread
     if SYNC_PARSE:
         parse_and_store(doc_id, filename)
     else:
         executor.submit(parse_and_store, doc_id, filename)
-    conn.close()
 
     return redirect(url_for("review", doc_id=doc_id))
 
@@ -252,6 +266,23 @@ def upload():
 # ---- INTERNAL TASKS ----
 
 def parse_and_store(doc_id: int, filename: str) -> None:
+    """Persist success or failure for the queued extraction, including provider errors."""
+    conn = db_conn()
+    conn.execute("UPDATE documents SET status='processing', error=NULL WHERE id=?", (doc_id,))
+    conn.commit()
+    conn.close()
+    try:
+        _extract_and_store(doc_id, filename)
+    except Exception as error:
+        LOG.exception("Extraction failed for document %s", doc_id)
+        message = "Extraction timed out. Upload the document again." if isinstance(error, requests.Timeout) else "Extraction failed. Check the provider and upload the document again."
+        conn = db_conn()
+        conn.execute("UPDATE documents SET status='failed', error=? WHERE id=?", (message, doc_id))
+        conn.commit()
+        conn.close()
+
+
+def _extract_and_store(doc_id: int, filename: str) -> None:
     """Call extract API, then persist line items for later review."""
     LOG.info("Parsing doc %s", doc_id)
     
@@ -259,13 +290,17 @@ def parse_and_store(doc_id: int, filename: str) -> None:
     file_path = os.path.join(UPLOAD_FOLDER, filename)
     with open(file_path, 'rb') as f:
         files = {'file': (filename, f, 'application/pdf')}
-        resp = requests.post(EXTRACT_ENDPOINT, files=files)
+        resp = requests.post(EXTRACT_ENDPOINT, files=files, timeout=PROVIDER_TIMEOUT)
     resp.raise_for_status()
     
     # API returns array of objects directly
     items = resp.json()
+    if not isinstance(items, list) or any(not isinstance(item, dict) for item in items):
+        raise ValueError("Extractor must return an array of line items")
     # Convert the extraction API format to expected format
-    if items and isinstance(items[0], dict) and 'description' not in items[0]:
+    if items and 'description' not in items[0]:
+        if any(not isinstance(item.get('Request Item'), str) for item in items):
+            raise ValueError('Every extracted item must contain a request description')
         # API returns objects like {"Request Item": "...", "Amount": ..., ...}
         # Convert to our expected format
         formatted_items = []
@@ -277,6 +312,8 @@ def parse_and_store(doc_id: int, filename: str) -> None:
             formatted_items.append({"description": description})
         items = formatted_items
 
+    if any(not isinstance(item.get("description"), str) for item in items):
+        raise ValueError("Every extracted item must contain a description")
     conn = db_conn()
     c = conn.cursor()
     with conn:  # ensures atomic commit / rollback
@@ -296,6 +333,8 @@ def parse_and_store(doc_id: int, filename: str) -> None:
                 """,
                 (doc_id, itm["description"], idx))
 
+        c.execute("UPDATE documents SET status='ready', error=NULL WHERE id=?", (doc_id,))
+    conn.close()
     LOG.info("Stored %d items for doc %s", len(items), doc_id)
 
 
@@ -309,6 +348,14 @@ def review(doc_id: int):
         "SELECT * FROM line_items WHERE document_id=?", (doc_id,)
     ).fetchall()
 
+    document = c.execute("SELECT id, status, error FROM documents WHERE id=?", (doc_id,)).fetchone()
+    if document is None:
+        conn.close()
+        return {"error": "Document not found"}, 404
+    if document["status"] != "ready":
+        conn.close()
+        return render_template("index.html", DOCUMENT_STATUS=dict(document)), 502 if document["status"] == "failed" else 202
+
     # Ensure matches exist for each item
     for itm in items:
         if not c.execute(
@@ -320,6 +367,7 @@ def review(doc_id: int):
                 resp = requests.get(
                     MATCH_ENDPOINT,
                     params={"query": itm["description"], "limit": 5},
+                    timeout=PROVIDER_TIMEOUT,
                 )
                 resp.raise_for_status()
                 matches = resp.json()
@@ -352,9 +400,18 @@ def review(doc_id: int):
             }
         )
 
+    conn.close()
     return render_template(
         "index.html", REVIEW_DATA={"doc_id": doc_id, "rows": payload}
     )
+
+
+@app.route("/status/<int:doc_id>")
+def document_status(doc_id: int):
+    conn = db_conn()
+    row = conn.execute("SELECT id, status, error FROM documents WHERE id=?", (doc_id,)).fetchone()
+    conn.close()
+    return (dict(row), 200) if row else ({"error": "Document not found"}, 404)
 
 
 @app.route("/confirm/<int:doc_id>", methods=["POST"])
@@ -362,6 +419,11 @@ def confirm(doc_id: int):
     """Persist confirmed matches and return a CSV download."""
     conn = db_conn()
     c = conn.cursor()
+
+    document = c.execute("SELECT status FROM documents WHERE id=?", (doc_id,)).fetchone()
+    if document is None or document["status"] != "ready":
+        conn.close()
+        return {"error": "Document is not ready for export"}, 409
 
     # Validate the complete request before writing any selections.
     selections = []

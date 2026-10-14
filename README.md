@@ -337,3 +337,24 @@ DB_PATH=demo.db SYNC_PARSE=1 python -c "import app; app.app.run(port=8000)"
 ---
 
 *Built with ❤️ for manufacturing intelligence • Production-ready architecture • Enterprise-grade reliability* 
+
+### Extraction state and reproducible HTTP checks
+
+Uploads expose durable `queued`, `processing`, `ready`, or `failed` state at
+`GET /status/<document_id>`. The review page shows progress and polls that
+endpoint; provider failure is visible as HTTP 502 and export is blocked with
+409. Existing databases migrate automatically. On restart, interrupted
+thread-pool work is marked failed so it cannot remain silently pending; upload
+the PDF again to retry. Successful and failed completed records remain durable.
+
+Extraction and match requests have configurable connection/read timeouts
+(`PROVIDER_CONNECT_TIMEOUT=5`, `PROVIDER_READ_TIMEOUT=30`, positive seconds).
+`UPLOAD_FOLDER` and `DB_PATH` can isolate application data.
+
+Run `python -m pytest tests -q`, then `bash test_e2e.sh` after installing the
+requirements and pytest. The HTTP smoke creates valid minimal PDF byte fixtures,
+starts a real Flask process and a clearly labeled local provider fixture, and
+checks two documents' actual review/CSV IDs, HTTP 503 and read-timeout failures,
+blocked export and process-restart persistence. It uses temporary storage and
+readiness polling. It does not validate the deployed extraction service, OCR
+quality or the bundled sample PDFs (which currently contain zero-byte files).

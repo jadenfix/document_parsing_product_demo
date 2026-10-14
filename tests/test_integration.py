@@ -40,7 +40,20 @@ def start_stub_and_app(tmp_path_factory: pytest.TempPathFactory) -> Generator[No
     ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     # 5) Give both services time to boot
-    time.sleep(2)
+    deadline = time.monotonic() + 20
+    while True:
+        if app_proc.poll() is not None or stub_proc.poll() is not None:
+            raise RuntimeError("A test service exited before readiness")
+        try:
+            if requests.get(APP_HOST + "/", timeout=1).status_code == 200 and requests.get(STUB_HOST + "/match", timeout=1).status_code == 200:
+                break
+        except requests.RequestException:
+            pass
+        if time.monotonic() >= deadline:
+            app_proc.terminate()
+            stub_proc.terminate()
+            raise RuntimeError("Test services did not become ready")
+        time.sleep(0.05)
 
     yield  # Run the tests
 

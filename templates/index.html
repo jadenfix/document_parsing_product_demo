@@ -35,6 +35,31 @@
     </form>
   </section>
 
+  {% if DOCUMENT_STATUS %}
+  <section class="review-section" role="status" aria-live="polite">
+    {% if DOCUMENT_STATUS.status == 'failed' %}
+      <h2>Document processing failed</h2>
+      <p>{{ DOCUMENT_STATUS.error }}</p>
+    {% else %}
+      <h2>Document processing is in progress</h2>
+      <p>The review will open when extraction finishes.</p>
+      <script>
+        const statusUrl = {{ url_for('document_status', doc_id=DOCUMENT_STATUS.id) | tojson }};
+        async function pollStatus() {
+          try {
+            const response = await fetch(statusUrl);
+            if (!response.ok) throw new Error('Status unavailable');
+            const data = await response.json();
+            if (data.status === 'ready' || data.status === 'failed') { window.location.reload(); return; }
+          } catch (_) { /* Keep the processing message visible while connectivity recovers. */ }
+          setTimeout(pollStatus, 1000);
+        }
+        setTimeout(pollStatus, 1000);
+      </script>
+    {% endif %}
+  </section>
+  {% endif %}
+
   <!-- Review Section (shown when data exists) -->
   {% if REVIEW_DATA %}
   <section class="review-section slide-up">
